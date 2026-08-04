@@ -1,43 +1,54 @@
-# Astro Starter Kit: Minimal
+# Golden Tie Limited — Website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Minimal one-page marketing site for **Golden Tie Limited**, an experiential holding company.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## About Golden Tie Limited
 
-## 🚀 Project Structure
+Golden Tie Limited is a conglomerate with interests across:
 
-Inside of your Astro project, you'll see the following folders and files:
+- Service Industry
+- Hospitality
+- Entertainment
+- Recycling
+- Biodiesel
+- Entrepreneurship
+- Tipping App
+- Supplies and Staffing
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Scope (v1)
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Single-page site. Sections:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. **Hero** — company name, one-line description ("Experiential Company"), brief intro to the conglomerate.
+2. **About** — short paragraph on Golden Tie Limited and its areas of interest (list above).
+3. **Subsidiaries** — card grid listing the three subsidiaries in focus for v1:
+   - **Biodiesel Feedstock Trader** — Sourcing and trading waste-oil feedstock for sustainable biodiesel production.
+   - **Training School** — Hands-on training programs building skills for hospitality, service, and entrepreneurship.
+   - **Tipping App** — A digital tipping platform connecting service staff with the customers they serve.
+4. **Footer** — company name, year, contact placeholder (generic for now, no real email/phone/address yet).
 
-Any static assets, like images, can be placed in the `public/` directory.
+No dedicated sub-pages for v1 — everything lives on the single page.
 
-## 🧞 Commands
+## Brand
 
-All commands are run from the root of the project, from a terminal:
+- **Colors**: Black and Gold.
+  - Black: `#0D0D0D` (background) / `#1A1A1A` (surface)
+  - Gold: `#D4AF37` (primary accent) / `#F4E5B2` (light gold, highlights)
+  - Off-white `#F5F5F0` for body text on dark backgrounds.
+- **Typography**: Bodoni Moda (headings/display) + Jost (body) — luxury, minimalist pairing.
+- **Logo**: text wordmark ("Golden Tie"), no logo file supplied.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Tech
 
-## 👀 Want to learn more?
+- [Astro](https://astro.build) (static, minimal JS), `minimal` starter template.
+- Plain CSS (no framework).
+- Deploy target: **Cloudflare Pages**.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Commands
+
+| Command           | Action                                      |
+| :----------------- | :------------------------------------------- |
+| `npm install`       | Installs dependencies                        |
+| `npm run dev`       | Starts local dev server at `localhost:4321`  |
+| `npm run build`     | Build production site to `./dist/`           |
+| `npm run preview`   | Preview build locally before deploying       |
