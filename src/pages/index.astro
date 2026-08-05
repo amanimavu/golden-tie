@@ -1,5 +1,32 @@
 ---
+const subsidiaries = [
+	{
+		name: "Biodiesel Feedstock Trader",
+		description:
+			"Sourcing and trading waste-oil feedstock for sustainable biodiesel production.",
+	},
+	{
+		name: "Training School",
+		description:
+			"Hands-on training programs building skills for hospitality, service, and entrepreneurship.",
+	},
+	{
+		name: "Tipping App",
+		description:
+			"A digital tipping platform connecting service staff with the customers they serve.",
+	},
+];
 
+const interests = [
+	"Service Industry",
+	"Hospitality",
+	"Entertainment",
+	"Recycling",
+	"Biodiesel",
+	"Entrepreneurship",
+	"Tipping App",
+	"Supplies and Staffing",
+];
 ---
 
 <html lang="en">
@@ -7,11 +34,279 @@
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<meta
+			name="description"
+			content="Golden Tie Limited is an experiential conglomerate with interests across hospitality, entertainment, biodiesel, training, and technology."
+		/>
+		<title>Golden Tie Limited — Experiential Company</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<header class="hero">
+			<div class="wrap">
+				<p class="wordmark">Golden Tie</p>
+				<h1>Golden Tie Limited</h1>
+				<p class="tagline">An Experiential Company</p>
+				<p class="intro">
+					Golden Tie Limited is a conglomerate with interests spanning the
+					service industry, hospitality, entertainment, recycling, biodiesel,
+					entrepreneurship, and technology — building ventures that create
+					experiences and opportunity.
+				</p>
+			</div>
+		</header>
+
+		<main>
+			<section class="about" aria-labelledby="about-heading">
+				<div class="wrap">
+					<h2 id="about-heading">About</h2>
+					<p>
+						From energy to hospitality to technology, Golden Tie Limited
+						brings together a diverse portfolio of ventures united by one
+						purpose: creating meaningful experiences and sustainable
+						opportunity.
+					</p>
+					<ul class="interests">
+						{interests.map((interest) => <li>{interest}</li>)}
+					</ul>
+				</div>
+			</section>
+
+			<section class="subsidiaries" aria-labelledby="subsidiaries-heading">
+				<div class="wrap">
+					<h2 id="subsidiaries-heading">Subsidiaries</h2>
+					<div class="card-grid">
+						{
+							subsidiaries.map((sub) => (
+								<article class="card">
+									<h3>{sub.name}</h3>
+									<p>{sub.description}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<p>&copy; {new Date().getFullYear()} Golden Tie Limited. All rights reserved.</p>
+				<p class="contact">Get in touch — contact details coming soon.</p>
+			</div>
+		</footer>
+
+		<style>
+			:root {
+				--color-background: #0d0d0d;
+				--color-surface: #1a1a1a;
+				--color-foreground: #f5f5f0;
+				--color-muted-foreground: #b8b6ac;
+				--color-accent: #d4af37;
+				--color-accent-light: #f4e5b2;
+				--color-border: #33301f;
+
+				--font-heading: "Bodoni Moda", serif;
+				--font-body: "Jost", sans-serif;
+
+				--space-md: 1rem;
+				--space-lg: 1.5rem;
+				--space-xl: 2rem;
+				--space-2xl: 3rem;
+				--space-3xl: 4rem;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			html {
+				scroll-behavior: smooth;
+				scrollbar-width: thin;
+				scrollbar-color: var(--color-accent) var(--color-background);
+			}
+
+			body {
+				position: relative;
+				margin: 0;
+				background: var(--color-background);
+				color: var(--color-foreground);
+				font-family: var(--font-body);
+				font-size: 16px;
+				line-height: 1.6;
+			}
+
+			body::before {
+				content: "";
+				position: fixed;
+				inset: 0;
+				z-index: -1;
+				background-image: url("/textures/halftone-bg.webp");
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: cover;
+				filter: sepia(1) saturate(4) hue-rotate(-12deg) brightness(0.5);
+				opacity: 0.15;
+				pointer-events: none;
+			}
+
+			::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: var(--color-background);
+			}
+
+			::-webkit-scrollbar-thumb {
+				background-color: var(--color-accent);
+				border-radius: 999px;
+				border: 2px solid var(--color-background);
+			}
+
+			h1,
+			h2,
+			h3,
+			.wordmark {
+				font-family: var(--font-heading);
+				font-weight: 600;
+				letter-spacing: 0.02em;
+			}
+
+			.wrap {
+				max-width: 960px;
+				margin: 0 auto;
+				padding-inline: var(--space-lg);
+			}
+
+			.hero {
+				padding-block: var(--space-3xl);
+				text-align: center;
+				border-bottom: 1px solid var(--color-border);
+			}
+
+			.wordmark {
+				color: var(--color-accent);
+				text-transform: uppercase;
+				letter-spacing: 0.3em;
+				font-size: 0.9rem;
+				margin: 0 0 var(--space-xl);
+			}
+
+			.hero h1 {
+				font-size: clamp(2.25rem, 5vw, 3.5rem);
+				margin: 0 0 var(--space-md);
+			}
+
+			.tagline {
+				color: var(--color-accent-light);
+				font-size: 1.1rem;
+				margin: 0 0 var(--space-lg);
+			}
+
+			.intro {
+				max-width: 640px;
+				margin-inline: auto;
+				color: var(--color-muted-foreground);
+			}
+
+			section {
+				padding-block: var(--space-3xl);
+			}
+
+			.about {
+				border-bottom: 1px solid var(--color-border);
+			}
+
+			h2 {
+				font-size: 1.75rem;
+				margin: 0 0 var(--space-lg);
+			}
+
+			.about p {
+				max-width: 640px;
+				color: var(--color-muted-foreground);
+			}
+
+			.interests {
+				list-style: none;
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--space-md);
+				padding: 0;
+				margin: var(--space-xl) 0 0;
+			}
+
+			.interests li {
+				border: 1px solid var(--color-border);
+				border-radius: 999px;
+				padding: 0.4rem 1rem;
+				font-size: 0.9rem;
+				color: var(--color-accent-light);
+			}
+
+			.card-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: var(--space-lg);
+			}
+
+			.card {
+				background: var(--color-surface);
+				border: 1px solid var(--color-border);
+				border-radius: 8px;
+				padding: var(--space-lg);
+				transition:
+					border-color 200ms ease,
+					transform 200ms ease;
+			}
+
+			.card:hover {
+				border-color: var(--color-accent);
+				transform: translateY(-2px);
+			}
+
+			.card h3 {
+				color: var(--color-accent);
+				font-size: 1.2rem;
+				margin: 0 0 var(--space-md);
+			}
+
+			.card p {
+				color: var(--color-muted-foreground);
+				margin: 0;
+			}
+
+			.site-footer {
+				padding-block: var(--space-xl);
+				text-align: center;
+				color: var(--color-muted-foreground);
+				font-size: 0.9rem;
+			}
+
+			.site-footer p {
+				margin: 0.25rem 0;
+			}
+
+			.contact {
+				color: var(--color-accent-light);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				html {
+					scroll-behavior: auto;
+				}
+				.card {
+					transition: none;
+				}
+			}
+		</style>
 	</body>
 </html>
