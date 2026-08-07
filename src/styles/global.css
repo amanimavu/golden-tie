@@ -242,6 +242,13 @@ button:focus-visible {
 	font-size: 0.78rem;
 }
 
+/* CSR pill label shrinks to "CSR" on mobile (see 640px breakpoint below)
+   so all three nav pills fit on one row instead of wrapping the capsule
+   to two lines and colliding with the hero content beneath it. */
+.csr-label-short {
+	display: none;
+}
+
 /* Hero */
 
 .hero {
@@ -277,15 +284,39 @@ button:focus-visible {
 }
 
 @media (max-width: 900px) {
+	/* min-height:620px is sized for the desktop layout (absolutely
+	   positioned graphic needing room to sit beside the text) — once
+	   everything stacks in normal flow on mobile, it just reserves dead
+	   space at the bottom of the section. Let it size to content instead,
+	   and tighten the block padding to match. */
+	.hero-grid {
+		min-height: auto;
+		padding-block: var(--space-xl) var(--space-lg);
+	}
+
 	.hero-graphic {
 		position: relative;
 		top: auto;
 		right: auto;
 		transform: none;
-		width: min(420px, 90vw);
-		height: min(420px, 90vw);
+		width: min(360px, 80vw);
+		height: min(360px, 80vw);
 		margin-inline: auto;
-		margin-top: var(--space-2xl);
+		margin-top: var(--space-lg);
+	}
+
+	/* Desktop section rhythm (--space-3xl = 80px per side) is way too
+	   generous stacked on a narrow phone screen — compress it. */
+	.venture {
+		padding-block: var(--space-xl);
+	}
+
+	.about {
+		padding-block: var(--space-2xl);
+	}
+
+	.site-footer {
+		padding-block: var(--space-xl);
 	}
 }
 
@@ -576,8 +607,8 @@ h2 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 38px;
-	height: 38px;
+	width: 44px;
+	height: 44px;
 	border-radius: 50%;
 	border: 1px solid rgba(255, 255, 255, 0.22);
 	color: var(--text-muted);
@@ -603,11 +634,107 @@ h2 {
 	.pill-filled {
 		font-size: 0.78rem;
 	}
+
+	/* Two-column grid instead of the ragged inline-wrap flow — the
+	   border-left dividers were designed for horizontal adjacency, not
+	   grid cells, so drop them here rather than have a stray line only
+	   on some items. */
+	.interest-list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-sm) var(--space-lg);
+	}
+
+	.interest-list li {
+		display: flex;
+		align-items: center;
+		padding-inline: 0;
+		border-left: none;
+	}
+
+	/* Small gold dash instead of a default bullet — matches the
+	   .hairline accent motif used under the About eyebrow. */
+	.interest-list li::before {
+		content: "";
+		flex: 0 0 auto;
+		width: 10px;
+		height: 2px;
+		margin-right: var(--space-sm);
+		background: var(--color-gold);
+	}
+
+	/* Center the footer instead of the desktop brand-left/social-right
+	   split — logo stacked above text, everything centered. */
+	.footer-inner {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.footer-brand {
+		flex-direction: column;
+	}
 }
 
 @media (max-width: 640px) {
 	.nav-links li:nth-child(3) .pill-filled {
 		padding-inline: 0.9rem;
+	}
+
+	.csr-label-full {
+		display: none;
+	}
+
+	.csr-label-short {
+		display: inline;
+	}
+
+	/* Mobile: drop the logo, keep just the nav capsule (About/Subsidiaries/
+	   CSR) — display:none overrides the sticky/opacity JS state outright. */
+	.brand-inline {
+		display: none;
+	}
+
+	/* With the logo gone, nothing in the flow reserves space for the
+	   fixed nav capsule anymore (previously .brand-inline's own height
+	   did that job incidentally). Give content explicit clearance instead. */
+	.hero-grid {
+		padding-top: var(--nav-height);
+	}
+
+	/* The CSR page-header's negative-margin trick specifically pulls the
+	   photo up behind the logo — with the logo hidden here, that math no
+	   longer applies, so undo it and use the same nav-capsule clearance
+	   as the hero instead. */
+	.page-header {
+		margin-top: 0;
+		padding-top: var(--nav-height);
+	}
+
+	/* Full-width nav bar with evenly-spaced items, instead of a
+	   content-sized capsule floated to the right. */
+	.nav-capsule {
+		width: 100%;
+	}
+
+	.nav-links {
+		justify-content: space-between;
+	}
+}
+
+@media (max-width: 360px) {
+	/* Subsidiaries dropped from the nav only at this very narrow width —
+	   it sits right after the hero already, so it needs the jump-link
+	   least of the three. About (further down the page) and CSR (a
+	   separate page, unreachable any other way) stay. */
+	.nav-links li:nth-child(2) {
+		display: none;
+	}
+
+	/* At very narrow widths (e.g. 320px), .wrap's padding-inline eats
+	   into the nav capsule's available width enough to force the pills
+	   onto two rows even with the CSR label abbreviated. Tighten it. */
+	.wrap {
+		padding-inline: var(--space-md);
 	}
 }
 
