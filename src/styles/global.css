@@ -1,0 +1,514 @@
+:root {
+	--color-ink: #131313;
+	--color-charcoal: #222126;
+	--color-slate: #2b2b2b;
+	--color-gold: #efbf04;
+	--color-amber: #ffc766;
+	--color-yellow: #ffdd00;
+	--color-orange: #f07200;
+	--color-paper: #ffffff;
+	--text-primary: rgba(255, 255, 255, 0.92);
+	--text-muted: rgba(255, 255, 255, 0.6);
+
+	--font-display: "Space Grotesk", sans-serif;
+	--font-body: "Manrope", sans-serif;
+
+	--content-max: 1180px;
+	/* Clearance for the fixed nav capsule only — the logo is no longer
+	   fixed, so this isn't used for body padding, just scroll-margin. */
+	--nav-height: 92px;
+
+	--space-sm: 0.5rem;
+	--space-md: 1rem;
+	--space-lg: 1.5rem;
+	--space-xl: 2rem;
+	--space-2xl: 3rem;
+	--space-3xl: 5rem;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-charcoal) var(--color-ink);
+}
+
+body {
+	position: relative;
+	margin: 0;
+	background: var(--color-ink);
+	color: var(--text-primary);
+	font-family: var(--font-body);
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+#top,
+#about,
+#subsidiaries {
+	scroll-margin-top: var(--nav-height);
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--color-charcoal);
+	border-radius: 999px;
+	border: 2px solid var(--color-ink);
+}
+
+h1,
+h2,
+h3,
+.wordmark,
+.pill,
+.eyebrow,
+.tag-pill {
+	font-family: var(--font-display);
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.wrap {
+	max-width: var(--content-max);
+	margin: 0 auto;
+	padding-inline: var(--space-lg);
+}
+
+a {
+	color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+	outline: 2px solid var(--color-gold);
+	outline-offset: 3px;
+}
+
+/* Nav + pills */
+
+/* Logo scrolls away with the page (normal flow, not fixed). The nav links
+   live in their own rounded capsule that IS fixed independently, so only
+   the capsule stays visible/"docked" while scrolling. */
+.brand-inline {
+	padding-block: var(--space-lg);
+}
+
+.wordmark {
+	display: inline-flex;
+	align-items: center;
+	text-decoration: none;
+}
+
+.logo {
+	display: block;
+	height: 88px;
+	width: auto;
+}
+
+.nav-fixed {
+	position: fixed;
+	top: var(--space-lg);
+	left: 0;
+	right: 0;
+	z-index: 100;
+	pointer-events: none;
+}
+
+.nav-fixed-inner {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.nav-capsule {
+	pointer-events: auto;
+	background: rgba(19, 19, 19, 0.6);
+	backdrop-filter: blur(16px) saturate(140%);
+	-webkit-backdrop-filter: blur(16px) saturate(140%);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	padding: 0.75rem 1rem;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+	.nav-capsule {
+		background: rgba(19, 19, 19, 0.94);
+	}
+}
+
+.nav-links {
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	margin: 0;
+	padding: 0;
+	flex-wrap: wrap;
+}
+
+.pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.55rem 1.25rem;
+	border-radius: 999px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		background-color 200ms ease,
+		color 200ms ease,
+		border-color 200ms ease,
+		transform 200ms ease;
+}
+
+.pill-outline {
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	color: var(--text-primary);
+}
+
+.pill-outline:hover,
+.pill-outline:focus-visible {
+	border-color: var(--color-gold);
+	color: var(--color-gold);
+}
+
+.pill-filled {
+	background: var(--color-gold);
+	color: var(--color-ink);
+	font-weight: 600;
+	border: 1px solid var(--color-gold);
+}
+
+.pill-filled:hover,
+.pill-filled:focus-visible {
+	background: var(--color-amber);
+	border-color: var(--color-amber);
+}
+
+.pill-sm {
+	padding: 0.4rem 0.9rem;
+	font-size: 0.78rem;
+}
+
+/* Hero */
+
+.hero {
+	position: relative;
+	overflow: hidden;
+}
+
+.hero-grid {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-2xl);
+	flex-wrap: wrap;
+	padding-block: var(--space-2xl) var(--space-3xl);
+}
+
+.hero-content {
+	position: relative;
+	flex: 1 1 26rem;
+	max-width: 42rem;
+}
+
+.hero-graphic {
+	position: relative;
+	flex: 0 0 auto;
+	width: min(420px, 90vw);
+	height: min(420px, 90vw);
+}
+
+.hero-dots {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.hero-headline {
+	position: relative;
+	z-index: 1;
+	font-weight: 700;
+	font-size: clamp(2.75rem, 7vw, 5.5rem);
+	line-height: 0.98;
+	letter-spacing: -0.02em;
+	color: var(--color-paper);
+	margin: var(--space-xl) 0 var(--space-lg);
+}
+
+.hero-sub {
+	position: relative;
+	z-index: 1;
+	max-width: 42ch;
+	font-size: 1.1rem;
+	color: var(--text-muted);
+	margin: 0;
+}
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.wordmark,
+.nav-links li,
+.hero-headline,
+.hero-sub {
+	animation: rise 550ms ease both;
+}
+
+.nav-links li:nth-child(1) {
+	animation-delay: 60ms;
+}
+.nav-links li:nth-child(2) {
+	animation-delay: 120ms;
+}
+.nav-links li:nth-child(3) {
+	animation-delay: 180ms;
+}
+.hero-headline {
+	animation-delay: 260ms;
+}
+.hero-sub {
+	animation-delay: 360ms;
+}
+
+/* Subsidiaries */
+
+.subsidiaries {
+	padding-block: var(--space-xl) 0;
+}
+
+.venture {
+	padding-block: var(--space-3xl);
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	opacity: 1;
+	transform: none;
+}
+
+.venture:first-child {
+	border-top: none;
+}
+
+.eyebrow {
+	color: var(--color-gold);
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	font-size: 0.78rem;
+	font-weight: 500;
+	margin: 0;
+}
+
+.hairline {
+	display: block;
+	width: 48px;
+	height: 2px;
+	background: var(--color-gold);
+	margin: var(--space-md) 0 var(--space-lg);
+}
+
+.venture-name {
+	font-weight: 700;
+	font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+	line-height: 1.02;
+	letter-spacing: -0.02em;
+	color: var(--color-paper);
+	margin: 0 0 var(--space-lg);
+}
+
+.venture-desc {
+	max-width: 34ch;
+	color: var(--text-muted);
+	font-size: 1.05rem;
+	margin: 0;
+}
+
+.js .venture {
+	opacity: 0;
+	transform: translateY(28px);
+	transition:
+		opacity 700ms ease,
+		transform 700ms ease;
+}
+
+.js .venture.is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+/* About */
+
+.about {
+	padding-block: var(--space-3xl);
+	background: var(--color-paper);
+}
+
+h2 {
+	font-size: clamp(1.75rem, 3vw, 2.5rem);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: var(--color-paper);
+	margin: 0 0 var(--space-lg);
+}
+
+.about h2 {
+	color: var(--color-ink);
+}
+
+.about p {
+	max-width: 60ch;
+	color: rgba(19, 19, 19, 0.7);
+	font-size: 1.05rem;
+}
+
+.interest-list {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+	margin: var(--space-xl) 0 0;
+}
+
+.interest-list li {
+	padding-inline: var(--space-md);
+	border-left: 1px solid rgba(19, 19, 19, 0.15);
+	color: rgba(19, 19, 19, 0.7);
+	font-size: 0.95rem;
+}
+
+.interest-list li:first-child {
+	padding-left: 0;
+	border-left: none;
+}
+
+/* Footer */
+
+.site-footer {
+	padding-block: var(--space-2xl);
+}
+
+.footer-inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-xl);
+}
+
+.footer-brand {
+	display: flex;
+	align-items: center;
+	gap: var(--space-lg);
+}
+
+.footer-brand-text p {
+	margin: 0.25rem 0;
+	font-size: 0.85rem;
+	color: var(--text-muted);
+}
+
+.footer-logo {
+	height: 88px;
+}
+
+.footer-brand .contact {
+	color: var(--color-amber);
+}
+
+.social-links {
+	list-style: none;
+	display: flex;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+}
+
+.social-links a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	color: var(--text-muted);
+	transition:
+		color 200ms ease,
+		border-color 200ms ease,
+		transform 200ms ease;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+	color: var(--color-gold);
+	border-color: var(--color-gold);
+	transform: scale(1.08);
+}
+
+.social-links svg {
+	width: 16px;
+	height: 16px;
+}
+
+@media (max-width: 900px) {
+	.pill-filled {
+		font-size: 0.78rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.nav-links li:nth-child(3) .pill-filled {
+		padding-inline: 0.9rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	.wordmark,
+	.nav-links li,
+	.hero-headline,
+	.hero-sub {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+
+	.js .venture {
+		opacity: 1 !important;
+		transform: none !important;
+		transition: none !important;
+	}
+
+	.social-links a {
+		transition: none !important;
+	}
+}

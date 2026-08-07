@@ -1,52 +1,51 @@
-# Page Override: index (one-page site)
+# Page Override: index (`/`)
 
-Overrides MASTER.md for this project. Brief calls for a **minimal**, **dark** (black + gold) one-page
-site — MASTER's default palette/style are light-bg "Liquid Glass" (blur/morph SaaS style), which
-don't fit. Typography from MASTER is kept as-is.
+Overrides MASTER.md where noted. Site is now **multi-page** (Index, CSR, Blogs) — index is the
+main marketing page: Hero, Subsidiaries, About, Footer.
 
-## Color Palette (dark, overrides MASTER)
+## Navigation (site-wide, lives in Hero on every page)
 
-| Role | Hex | CSS Variable |
-|------|-----|--------------|
-| Background | `#0D0D0D` | `--color-background` |
-| Surface (cards) | `#1A1A1A` | `--color-surface` |
-| Foreground (body text) | `#F5F5F0` | `--color-foreground` |
-| Accent/Gold | `#D4AF37` | `--color-accent` |
-| Accent Light (highlights) | `#F4E5B2` | `--color-accent-light` |
-| Border | `#33301F` | `--color-border` |
-| On Accent (text on gold) | `#0D0D0D` | `--color-on-accent` |
+Wordmark/logo left, nav right, rendered as pills per MASTER's Signature Shape Language:
 
-Contrast check: `#D4AF37` on `#0D0D0D` ≈ 8:1 (passes AA). `#F5F5F0` on `#0D0D0D` ≈ 18:1.
+- **About** — outline pill, anchor to `#about` on index; from other pages, link to `/#about`
+- **Subsidiaries** — outline pill, anchor to `#subsidiaries` on index; from other pages, link to
+  `/#subsidiaries`
+- **Corporate Social Responsibility** — filled Gold pill, links to `/csr` page (label may
+  abbreviate to "CSR" on small screens). Filled, not outline, because it's the one nav item that
+  goes to a different page rather than scrolling this one.
 
-## Typography (from MASTER, unchanged)
+Hover/focus state on outline pills uses a Gold border/fill transition (scroll-spy "active
+section" tracking was considered and skipped as unnecessary complexity for a single page).
 
-- Heading: Bodoni Moda
-- Body: Jost
-- Google Fonts import: `https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap`
+## Sections (in order)
 
-## Style (overrides MASTER)
+1. **Hero** (contains navigation) — wordmark, nav, large display headline (company name +
+   one-line positioning), orchestrated load-in animation per MASTER.
+2. **Subsidiaries** — the three editorial-spread sections from MASTER's Signature Layout (Tipping
+   App, Biodiesel Feedstock Trader, Training Institute). `id="subsidiaries"` on the wrapping
+   section for nav anchoring.
+3. **About** — conglomerate description + industries list. `id="about"` on the section.
+4. **Footer** — company info, social icons (with hover micro-interactions per MASTER). No
+   secondary nav — tried, removed; primary nav in the hero is the only nav on the page.
 
-Minimal, static, editorial — not "Liquid Glass". No blur/morph/glass effects. Flat surfaces,
-generous whitespace, thin gold hairline borders/dividers, subtle hover states (translateY +
-border-color transition, 150-250ms). No mega menu, no path-selection pattern — single page,
-single nav (in-page anchor links only, if any).
+## Subsidiary content (for the three spreads)
 
-## Sections (overrides MASTER's "Enterprise Gateway" pattern)
+| Subsidiary | Eyebrow (category) | Reserved identity color (unused today) |
+|---|---|---|
+| Tipping App | Fintech — Digital Tipping | Yellow `#FFDD00` |
+| Biodiesel Feedstock Trader | Energy — Feedstock Trading | Orange `#F07200` |
+| Training Institute | Education — Skills Training | Amber `#FFC766` |
 
-1. Hero — wordmark "Golden Tie", tagline ("Experiential Company"), one-line intro.
-2. About — paragraph on the conglomerate + interest areas list.
-3. Subsidiaries — 3-card grid: Biodiesel Feedstock Trader, Training School, Tipping App.
-4. Footer — company name, year, generic contact placeholder.
+Order on the page: Tipping App → Biodiesel Feedstock Trader → Training Institute (matches the
+order given in the brief). No numbering — these are peer businesses, not a sequence. Each spread
+is text + whitespace only (eyebrow, hairline, name, description) — the per-subsidiary color
+capsule was tried and removed as an unneeded decorative element (see MASTER).
 
-## Components
+## Superseded from earlier version
 
-- **Cards**: `background: var(--color-surface)`, `border: 1px solid var(--color-border)`,
-  `border-radius: 8px`, padding `24px`, hover: `border-color: var(--color-accent)` +
-  `translateY(-2px)`, transition 200ms.
-- **Buttons/links**: gold text or gold border on transparent bg; avoid solid gold fills for large
-  areas (only small CTAs if any — v1 has no hard CTA).
-
-## Kept from MASTER
-
-- Spacing scale, shadow depths, a11y checklist (contrast, focus states, reduced-motion, no
-  emoji icons, responsive breakpoints 375/768/1024/1440).
+- The one-page-only scope, the old black/gold placeholder palette (`#0D0D0D` / `#D4AF37`), the
+  Bodoni Moda/Jost typography, the bordered subsidiary card-grid, and the thin-SVG-line-motif
+  concept are all replaced by MASTER.md's current rules (pills/capsules, the accent family
+  above). The halftone texture background (`public/textures/halftone-bg.webp`) and thin gold
+  scrollbar are visual details independent of the palette change — retarget their tint to
+  `#EFBF04` (not the old `#D4AF37`).
