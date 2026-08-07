@@ -17,6 +17,12 @@
 	/* Clearance for the fixed nav capsule only — the logo is no longer
 	   fixed, so this isn't used for body padding, just scroll-margin. */
 	--nav-height: 92px;
+	/* .brand-inline's rendered height (88px logo + space-lg padding on
+	   both sides) — single source of truth, used both to pull the CSR
+	   page-header photo up behind it and to pull #top's fragment-scroll
+	   landing position up so navigating to /#top reveals the logo instead
+	   of landing right at its bottom edge. */
+	--brand-inline-height: 136px;
 
 	--space-sm: 0.5rem;
 	--space-md: 1rem;
@@ -46,7 +52,15 @@ body {
 	line-height: 1.6;
 }
 
-#top,
+/* #top gets its own value (not --nav-height, which is for clearing the
+   fixed nav capsule mid-page): landing scroll position = elementTop -
+   scroll-margin-top, so setting this to .brand-inline's height pulls the
+   landing point up by exactly that much, revealing the logo above #top
+   instead of landing right at its bottom edge. */
+#top {
+	scroll-margin-top: var(--brand-inline-height);
+}
+
 #about,
 #subsidiaries {
 	scroll-margin-top: var(--nav-height);
@@ -106,11 +120,29 @@ button:focus-visible {
 
 /* Nav + pills */
 
-/* Logo scrolls away with the page (normal flow, not fixed). The nav links
-   live in their own rounded capsule that IS fixed independently, so only
-   the capsule stays visible/"docked" while scrolling. */
+/* Logo is pinned (sticky) at the top of the viewport, same as the nav
+   capsule, so it stays put while scrolling instead of scrolling away —
+   the hide/reappear timers in BaseLayout's script fade it in place rather
+   than it simply leaving the viewport before the fade ever registers. */
 .brand-inline {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	/* display:flex (not block+inline-flex child) so the box height is
+	   exactly logo-height + padding — an inline-flex child inside a plain
+	   block otherwise inherits a few extra px from the line box, which
+	   threw off .page-header's negative-margin math below. */
+	display: flex;
 	padding-block: var(--space-lg);
+}
+
+.js .brand-inline {
+	opacity: 0;
+	transition: opacity 200ms ease;
+}
+
+.js .brand-inline.is-visible {
+	opacity: 1;
 }
 
 .wordmark {
@@ -218,38 +250,50 @@ button:focus-visible {
 }
 
 .hero-grid {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-2xl);
-	flex-wrap: wrap;
+	position: relative;
+	min-height: 620px;
 	padding-block: var(--space-2xl) var(--space-3xl);
 }
 
 .hero-content {
 	position: relative;
-	flex: 1 1 26rem;
+	z-index: 2;
 	max-width: 42rem;
+	/* No interactive elements in here — let cursor events pass through to
+	   the graphic layer underneath so the noise-reveal effect still
+	   responds to movement over the text, not just the empty page. */
+	pointer-events: none;
 }
 
 .hero-graphic {
-	position: relative;
-	flex: 0 0 auto;
-	width: min(420px, 90vw);
-	height: min(420px, 90vw);
+	position: absolute;
+	top: 50%;
+	right: 0%;
+	z-index: 1;
+	width: min(580px, 78vw);
+	height: min(580px, 78vw);
+	opacity: 0.8;
+	transform: translateY(-50%);
 }
 
-.hero-dots {
-	display: block;
-	width: 100%;
-	height: 100%;
+@media (max-width: 900px) {
+	.hero-graphic {
+		position: relative;
+		top: auto;
+		right: auto;
+		transform: none;
+		width: min(420px, 90vw);
+		height: min(420px, 90vw);
+		margin-inline: auto;
+		margin-top: var(--space-2xl);
+	}
 }
 
 .hero-headline {
 	position: relative;
 	z-index: 1;
 	font-weight: 700;
-	font-size: clamp(2.75rem, 7vw, 5.5rem);
+	font-size: clamp(2.75rem, 7vw, 6rem);
 	line-height: 0.98;
 	letter-spacing: -0.02em;
 	color: var(--color-paper);
@@ -297,6 +341,83 @@ button:focus-visible {
 }
 .hero-sub {
 	animation-delay: 360ms;
+}
+
+/* Page header (non-hero pages, e.g. CSR) */
+
+/* Full-bleed photo behind the headline — a scrim gradient keeps the text
+   legible over whatever the source image looks like, darkest at the
+   bottom where the copy sits, clearing up toward the top of the frame. */
+.page-header {
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: flex-end;
+	min-height: 560px;
+	/* Pull up behind .brand-inline so the photo starts at the very top of
+	   the page instead of below the logo row. */
+	margin-top: calc(var(--brand-inline-height) * -1);
+	padding-block: calc(var(--space-2xl) + var(--brand-inline-height)) var(--space-3xl);
+}
+
+.page-header-bg {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* Mirrored so the busier subject matter lands on the right, away from
+	   the headline/copy on the left. */
+	transform: scaleX(-1);
+	filter: grayscale(1) contrast(1.05) brightness(0.75);
+}
+
+.page-header-scrim {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	/* Reaches fully-opaque ink at the very bottom edge (0%) so the last
+	   visible pixel row is solid color, not photo — matches the flat
+	   background of the section beneath it with no visible seam. */
+	background: linear-gradient(
+		to top,
+		var(--color-ink) 0%,
+		rgba(19, 19, 19, 0.92) 20%,
+		rgba(19, 19, 19, 0.5) 50%,
+		rgba(19, 19, 19, 0.05) 90%,
+		transparent 100%
+	);
+}
+
+.page-header-grid {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+}
+
+.page-header-content {
+	max-width: 44rem;
+}
+
+.page-header .eyebrow {
+	margin-bottom: var(--space-md);
+}
+
+.page-title {
+	font-weight: 700;
+	font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+	line-height: 0.98;
+	letter-spacing: -0.02em;
+	color: var(--color-paper);
+	margin: 0 0 var(--space-lg);
+}
+
+.page-lede {
+	max-width: 55ch;
+	font-size: 1.1rem;
+	color: var(--text-muted);
+	margin: 0;
 }
 
 /* Subsidiaries */
@@ -410,6 +531,8 @@ h2 {
 /* Footer */
 
 .site-footer {
+	background: var(--color-charcoal);
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
 	padding-block: var(--space-2xl);
 }
 
@@ -505,6 +628,11 @@ h2 {
 	.js .venture {
 		opacity: 1 !important;
 		transform: none !important;
+		transition: none !important;
+	}
+
+	.js .brand-inline {
+		opacity: 1 !important;
 		transition: none !important;
 	}
 

@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import csrImage from "../lib/social-responsibility.jpg";
+
+const pillars = [
+	{
+		name: "Feedstock, Not Waste",
+		category: "Energy — Waste Reduction",
+		description:
+			"Our Biodiesel Feedstock Trader business exists to divert waste oil away from improper disposal and into cleaner fuel production — turning an environmental liability into a resource.",
+	},
+	{
+		name: "Training for Real Work",
+		category: "Education — Skills & Livelihoods",
+		description:
+			"Our Training Institute builds practical skills for hospitality, service, and entrepreneurship, aimed at real, immediate employability rather than certificates alone.",
+	},
+	{
+		name: "Standards Across the Group",
+		category: "Governance — Responsible Growth",
+		description:
+			"As new ventures join the group, each is held to the same standard of compliance and operational integrity as the ones before it.",
+	},
+];
+---
+
+<BaseLayout
+	title="Corporate Social Responsibility — Golden Tie Limited"
+	description="How Golden Tie Limited approaches responsibility across its energy, education, and technology ventures — waste reduction, skills training, and consistent governance standards."
+>
+	<header class="page-header" id="top">
+		<img class="page-header-bg" src={csrImage.src} alt="" />
+		<div class="page-header-scrim" aria-hidden="true"></div>
+		<div class="wrap page-header-grid">
+			<div class="page-header-content">
+				<p class="eyebrow">Corporate Social Responsibility</p>
+				<h1 class="page-title">Responsibility,<br />built into<br />how we operate</h1>
+				<p class="page-lede">
+					As a conglomerate spanning energy, education, and technology, we treat
+					responsibility as part of how each business runs day to day — not a
+					separate initiative bolted on after the fact.
+				</p>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="subsidiaries" id="initiatives" aria-labelledby="initiatives-heading">
+			<h2 id="initiatives-heading" class="visually-hidden">Focus Areas</h2>
+			<div class="wrap">
+				{
+					pillars.map((pillar) => (
+						<article class="venture" data-reveal>
+							<p class="eyebrow">{pillar.category}</p>
+							<span class="hairline" aria-hidden="true" />
+							<h3 class="venture-name">{pillar.name}</h3>
+							<p class="venture-desc">{pillar.description}</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
+	</main>
+</BaseLayout>

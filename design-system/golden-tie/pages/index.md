@@ -44,8 +44,8 @@ capsule was tried and removed as an unneeded decorative element (see MASTER).
 ## Superseded from earlier version
 
 - The one-page-only scope, the old black/gold placeholder palette (`#0D0D0D` / `#D4AF37`), the
-  Bodoni Moda/Jost typography, the bordered subsidiary card-grid, and the thin-SVG-line-motif
-  concept are all replaced by MASTER.md's current rules (pills/capsules, the accent family
-  above). The halftone texture background (`public/textures/halftone-bg.webp`) and thin gold
-  scrollbar are visual details independent of the palette change — retarget their tint to
-  `#EFBF04` (not the old `#D4AF37`).
+  Bodoni Moda/Jost typography, the bordered subsidiary card-grid, the thin-SVG-line-motif
+  concept, and the static halftone texture background are all replaced by MASTER.md's current
+  rules (pills/capsules, the accent family above, the interactive `NoiseReveal` component for
+  the hero graphic). The thin gold scrollbar retargets its tint to `#EFBF04` (not the old
+  `#D4AF37`).

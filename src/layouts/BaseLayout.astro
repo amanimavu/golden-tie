@@ -135,26 +135,15 @@ const year = new Date().getFullYear();
 					const TOP_THRESHOLD = 10;
 					const STICK_DELAY = 150;
 					const SETTLE_DELAY = 100;
-					// Ignore scroll events for a beat after load — a fresh
-					// page load can fire a stray scroll event or two on its
-					// own (fragment navigation, async image layout shifts)
-					// before things settle, and those shouldn't be able to
-					// hide the logo before the user has actually scrolled.
-					const LOAD_GRACE_PERIOD = 400;
 
 					let lastY = window.scrollY;
 					let hideTimer: ReturnType<typeof setTimeout> | undefined;
 					let showTimer: ReturnType<typeof setTimeout> | undefined;
 					let ticking = false;
-					const loadedAt = performance.now();
 
 					brand.classList.add("is-visible");
 
 					function handleScroll() {
-						if (performance.now() - loadedAt < LOAD_GRACE_PERIOD) {
-							lastY = window.scrollY;
-							return;
-						}
 						const y = window.scrollY;
 						const goingDown = y > lastY;
 						const goingUp = y < lastY;
