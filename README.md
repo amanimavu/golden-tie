@@ -1,41 +1,42 @@
 # Golden Tie Limited — Website
 
-Minimal one-page marketing site for **Golden Tie Limited**, an experiential holding company.
+Multi-page corporate site for **Golden Tie Limited**, a conglomerate holding company.
 
 ## About Golden Tie Limited
 
-Golden Tie Limited is a conglomerate with interests across:
+Golden Tie Limited is a conglomerate with interests across multiple industries. Current
+subsidiaries in scope for this site:
 
-- Service Industry
-- Hospitality
-- Entertainment
-- Recycling
-- Biodiesel
-- Entrepreneurship
-- Tipping App
-- Supplies and Staffing
+- **Tipping App** — digital tipping platform (fintech)
+- **Biodiesel Feedstock Trader** — sourcing and trading waste-oil feedstock (energy)
+- **Training Institute** — hands-on skills training (education)
 
-## Scope (v1)
+## Scope
 
-Single-page site. Sections:
+Multi-page Astro site:
 
-1. **Hero** — company name, one-line description ("Experiential Company"), brief intro to the conglomerate.
-2. **About** — short paragraph on Golden Tie Limited and its areas of interest (list above).
-3. **Subsidiaries** — card grid listing the three subsidiaries in focus for v1:
-   - **Biodiesel Feedstock Trader** — Sourcing and trading waste-oil feedstock for sustainable biodiesel production.
-   - **Training School** — Hands-on training programs building skills for hospitality, service, and entrepreneurship.
-   - **Tipping App** — A digital tipping platform connecting service staff with the customers they serve.
-4. **Footer** — company name, year, contact placeholder (generic for now, no real email/phone/address yet).
+1. **Index (`/`)** — Hero (with navigation), Subsidiaries, About, Footer.
+2. **Corporate Social Responsibility (`/csr`)** — content TBD.
+3. **Blogs (`/blog`)** — post listing + individual post pages, content TBD.
 
-No dedicated sub-pages for v1 — everything lives on the single page.
+Nav items: About, Subsidiaries, Corporate Social Responsibility.
+
+Full design direction (palette, typography, layout philosophy) lives in
+`design-system/golden-tie/MASTER.md`, with per-page overrides in
+`design-system/golden-tie/pages/`.
 
 ## Brand
 
-- **Colors**: Black and Gold.
-  - Black: `#0D0D0D` (background) / `#1A1A1A` (surface)
-  - Gold: `#D4AF37` (primary accent) / `#F4E5B2` (light gold, highlights)
-  - Off-white `#F5F5F0` for body text on dark backgrounds.
-- **Typography**: Bodoni Moda (headings/display) + Jost (body) — luxury, minimalist pairing.
+- **Colors** (fixed, derived from the logo):
+  - Gold `#EFBF04` — primary accent
+  - Charcoal `#222126` — primary dark surface
+  - Ink `#131313` / Slate `#2b2b2b` — supporting dark tones
+  - Paper `#ffffff` — reversed/high-contrast text
+- **Typography**: Space Grotesk (display/headings, bold) + Manrope (body) — clean corporate
+  pairing, large bold headline scale.
+- **Style**: Large bold headings, creative negative space, large decorative elements, no generic
+  card grids (subsidiaries presented as full-bleed editorial spreads, not cards), tasteful
+  scroll/hover animation, animated icons.
 - **Logo**: text wordmark ("Golden Tie"), no logo file supplied.
 
 ## Tech

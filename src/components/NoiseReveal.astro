@@ -1,0 +1,270 @@
+---
+export interface Props {
+	src: string;
+	width?: number;
+	height?: number;
+	/** Background/"unlit pixel" color — defaults to the brand's --color-ink
+	 * so the effect blends into the page instead of showing as a black box. */
+	darkColor?: string;
+}
+
+const { src, width = 430, height = 430, darkColor = "#131313" } = Astro.props;
+---
+
+<div class="noise-reveal" style={`--nr-size: ${width}px; --nr-dark: ${darkColor}`}>
+	<canvas
+		class="noise-reveal-canvas"
+		width={width}
+		height={height}
+		data-src={src}
+		data-dark={darkColor}
+		aria-hidden="true"
+	></canvas>
+</div>
+
+<style>
+	.noise-reveal {
+		width: var(--nr-size, 430px);
+		max-width: 100%;
+		aspect-ratio: 1 / 1;
+		background: var(--nr-dark, #131313);
+		margin-inline: auto;
+	}
+
+	.noise-reveal-canvas {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: var(--nr-dark, #131313);
+	}
+</style>
+
+<script>
+	const GAMMA = 0.8;
+	const MIN_BRIGHTNESS = 180;
+	const MAX_BRIGHTNESS = 255;
+	// Spacing between candidate grain positions — fine enough to read as
+	// noise/grain, not chunky halftone dots.
+	const SPACING = 3.2;
+	// Each frame, a grain has this chance of rolling a new brightness value.
+	// Most grains hold their previous value, so only a scattered subset
+	// twinkles at a time — a calm shimmer, not full-frame flicker.
+	const TWINKLE_CHANCE = 0.035;
+
+	// Cursor-dispersion physics — driven by cursor SPEED, not proximity. A
+	// still cursor (even resting over the graphic) applies no force,
+	// matching the reference: grain only scatters while the cursor is
+	// actively moving, and springs back once it stops.
+	const REPEL_RADIUS = 50;
+	const REPEL_STRENGTH = 6.5;
+	const SPRING = 0.06;
+	const FRICTION = 0.84;
+	const MAX_SPEED = 22;
+	const SPEED_DECAY = 0.8;
+
+	type Grain = {
+		homeX: number;
+		homeY: number;
+		x: number;
+		y: number;
+		vx: number;
+		vy: number;
+		brightness: number;
+	};
+
+	function hexToRgb(hex: string): [number, number, number] {
+		const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		if (!m) return [0, 0, 0];
+		return [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)];
+	}
+
+	/** Renders a static image as animated grain: each candidate position's
+	 * gamma-adjusted luminance is the probability a persistent grain exists
+	 * there at all (dense in bright areas, sparse/none in dark ones — a
+	 * halftone-style density gradient fixed at load time). Grains twinkle
+	 * in brightness on a slow cadence, and scatter away from the cursor
+	 * (scaled by how fast it's moving) before springing back home. */
+	function setupNoiseReveal(canvas: HTMLCanvasElement) {
+		const src = canvas.dataset.src;
+		if (!src) return;
+		const [darkR, darkG, darkB] = hexToRgb(canvas.dataset.dark ?? "#131313");
+
+		const graphic = canvas.parentElement;
+		if (!graphic) return;
+
+		const ctx = canvas.getContext("2d", { willReadFrequently: true });
+		if (!ctx) return;
+		ctx.imageSmoothingEnabled = false;
+
+		const width = canvas.width;
+		const height = canvas.height;
+		const prefersReduced = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+
+		const img = new Image();
+		img.onload = () => {
+			// Extract luminance on an offscreen canvas composited over the
+			// same dark color as unlit grain, so transparent source pixels
+			// read as luminance 0 (no grain ever spawns there) — they fall
+			// away into the background seamlessly.
+			// Left transparent (no dark-color fill) so alpha survives the read —
+			// compositing onto the dark color first would bake transparent
+			// pixels into an opaque, grain-eligible luminance value, so the
+			// whole image rectangle would spawn grain instead of just the
+			// subject.
+			const off = document.createElement("canvas");
+			off.width = width;
+			off.height = height;
+			const offCtx = off.getContext("2d");
+			if (!offCtx) return;
+			offCtx.imageSmoothingEnabled = false;
+			offCtx.drawImage(img, 0, 0, width, height);
+
+			const { data: srcData } = offCtx.getImageData(0, 0, width, height);
+
+			function luminanceAt(x: number, y: number) {
+				const px = Math.min(Math.max(Math.round(x), 0), width - 1);
+				const py = Math.min(Math.max(Math.round(y), 0), height - 1);
+				const i = (py * width + px) * 4;
+				const luminance =
+					(0.299 * srcData[i] + 0.587 * srcData[i + 1] + 0.114 * srcData[i + 2]) / 255;
+				const alpha = srcData[i + 3] / 255;
+				return luminance * alpha;
+			}
+
+			const grains: Grain[] = [];
+			for (let y = 0; y < height; y += SPACING) {
+				for (let x = 0; x < width; x += SPACING) {
+					const jx = x + (Math.random() - 0.5) * SPACING * 0.6;
+					const jy = y + (Math.random() - 0.5) * SPACING * 0.6;
+					const probability = Math.pow(luminanceAt(jx, jy), GAMMA);
+					if (Math.random() >= probability) continue;
+
+					grains.push({
+						homeX: jx,
+						homeY: jy,
+						x: jx,
+						y: jy,
+						vx: 0,
+						vy: 0,
+						brightness:
+							MIN_BRIGHTNESS + Math.random() * (MAX_BRIGHTNESS - MIN_BRIGHTNESS),
+					});
+				}
+			}
+
+			// Reused every frame — cleared to the dark color and re-stamped
+			// with each grain's current position, never recreated.
+			const frame = ctx.createImageData(width, height);
+			const frameData = frame.data;
+			const darkTemplate = new Uint8ClampedArray(frameData.length);
+			for (let i = 0; i < darkTemplate.length; i += 4) {
+				darkTemplate[i] = darkR;
+				darkTemplate[i + 1] = darkG;
+				darkTemplate[i + 2] = darkB;
+				darkTemplate[i + 3] = 255;
+			}
+
+			function render() {
+				frameData.set(darkTemplate);
+				for (const g of grains) {
+					const px = Math.round(g.x);
+					const py = Math.round(g.y);
+					if (px < 0 || px >= width || py < 0 || py >= height) continue;
+					const i = (py * width + px) * 4;
+					frameData[i] = g.brightness;
+					frameData[i + 1] = g.brightness;
+					frameData[i + 2] = g.brightness;
+				}
+				ctx!.putImageData(frame, 0, 0);
+			}
+
+			let mouseX = -9999;
+			let mouseY = -9999;
+			let scale = 1;
+			let mouseSpeed = 0;
+
+			function step() {
+				const mouseInside = mouseX > -9000;
+				const speedFactor = Math.min(mouseSpeed / MAX_SPEED, 1);
+				const activeRepel = mouseInside && speedFactor > 0.01;
+
+				for (const g of grains) {
+					if (activeRepel) {
+						const dx = g.x - mouseX;
+						const dy = g.y - mouseY;
+						const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+						if (dist < REPEL_RADIUS) {
+							const force =
+								(1 - dist / REPEL_RADIUS) * REPEL_STRENGTH * speedFactor;
+							g.vx += (dx / dist) * force;
+							g.vy += (dy / dist) * force;
+						}
+					}
+
+					g.vx += (g.homeX - g.x) * SPRING;
+					g.vy += (g.homeY - g.y) * SPRING;
+					g.vx *= FRICTION;
+					g.vy *= FRICTION;
+					g.x += g.vx;
+					g.y += g.vy;
+
+					if (Math.random() < TWINKLE_CHANCE) {
+						g.brightness =
+							MIN_BRIGHTNESS + Math.random() * (MAX_BRIGHTNESS - MIN_BRIGHTNESS);
+					}
+				}
+
+				mouseSpeed *= SPEED_DECAY;
+			}
+
+			render();
+
+			if (prefersReduced) {
+				return;
+			}
+
+			let rafId = 0;
+			function loop() {
+				step();
+				render();
+				rafId = requestAnimationFrame(loop);
+			}
+			rafId = requestAnimationFrame(loop);
+
+			graphic.addEventListener("mousemove", (e) => {
+				const rect = graphic.getBoundingClientRect();
+				scale = width / rect.width;
+				const newX = (e.clientX - rect.left) * scale;
+				const newY = (e.clientY - rect.top) * scale;
+				if (mouseX > -9000) {
+					const dx = newX - mouseX;
+					const dy = newY - mouseY;
+					mouseSpeed = Math.max(mouseSpeed, Math.sqrt(dx * dx + dy * dy));
+				}
+				mouseX = newX;
+				mouseY = newY;
+			});
+			graphic.addEventListener("mouseleave", () => {
+				mouseX = -9999;
+				mouseY = -9999;
+			});
+
+			// Not strictly necessary for a static hero, but stop the loop
+			// if the canvas is ever removed from the document.
+			const observer = new MutationObserver(() => {
+				if (!document.body.contains(canvas)) {
+					cancelAnimationFrame(rafId);
+					observer.disconnect();
+				}
+			});
+			observer.observe(document.body, { childList: true, subtree: true });
+		};
+		img.src = src;
+	}
+
+	document
+		.querySelectorAll<HTMLCanvasElement>(".noise-reveal-canvas")
+		.forEach(setupNoiseReveal);
+</script>
