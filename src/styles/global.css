@@ -172,10 +172,15 @@ button:focus-visible {
 }
 
 .nav-capsule {
+	/* Custom-property indirection: the build minifier collapses the space
+	   between adjacent filter functions (blur(16px)saturate(140%)), which
+	   real browsers reject as an invalid value. Minifiers don't rewrite
+	   custom-property values, so routing through one preserves the space. */
+	--nav-blur: blur(16px) saturate(140%);
 	pointer-events: auto;
 	background: rgba(19, 19, 19, 0.6);
-	-webkit-backdrop-filter: blur(16px) saturate(140%);
-	backdrop-filter: blur(16px) saturate(140%);
+	-webkit-backdrop-filter: var(--nav-blur);
+	backdrop-filter: var(--nav-blur);
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	border-radius: 999px;
 	padding: 0.75rem 1rem;
