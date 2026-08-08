@@ -62,7 +62,9 @@ const year = new Date().getFullYear();
 					<img class="logo footer-logo" src={logoSrc} alt="Golden Tie" width="120" height="91" />
 					<div class="footer-brand-text">
 						<p>&copy; {year} Golden Tie Limited. All rights reserved.</p>
-						<p class="contact">Get in touch — contact details coming soon.</p>
+						<p class="contact">
+							<a href="/#contact">Get in touch</a>
+						</p>
 					</div>
 				</div>
 
@@ -146,7 +148,13 @@ const year = new Date().getFullYear();
 					let showTimer: ReturnType<typeof setTimeout> | undefined;
 					let ticking = false;
 
-					brand.classList.add("is-visible");
+					// Reflect the actual scroll position on load — a reload
+					// while already scrolled down must not show the logo,
+					// it should only ever start visible when the page is
+					// genuinely at the top.
+					if (lastY <= TOP_THRESHOLD) {
+						brand.classList.add("is-visible");
+					}
 
 					function handleScroll() {
 						const y = window.scrollY;

@@ -80,5 +80,73 @@ const interests = [
 				</ul>
 			</div>
 		</section>
+
+		<section class="contact-section" id="contact" aria-labelledby="contact-heading">
+			<div class="wrap contact-grid">
+				<div class="contact-intro">
+					<p class="eyebrow">Get in Touch</p>
+					<h2 id="contact-heading">Send us a message</h2>
+					<p>
+						Questions about our ventures, partnerships, or anything else — reach
+						out and we'll get back to you.
+					</p>
+				</div>
+
+				<form class="contact-form" id="contact-form" data-enabled="false" novalidate>
+					<label>
+						<span>Name</span>
+						<input type="text" name="name" autocomplete="name" required maxlength="120" />
+					</label>
+					<label>
+						<span>Email</span>
+						<input type="email" name="email" autocomplete="email" required />
+					</label>
+					<label>
+						<span>Message</span>
+						<textarea name="message" rows="5" required maxlength="4000"></textarea>
+					</label>
+					<label class="contact-honeypot" aria-hidden="true">
+						<span>Company</span>
+						<input type="text" name="company" tabindex="-1" autocomplete="off" />
+					</label>
+					<button type="submit" class="pill pill-filled" disabled>Coming Soon</button>
+					<p class="contact-status" role="status" aria-live="polite"></p>
+				</form>
+			</div>
+		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { actions, isInputError } from "astro:actions";
+
+	const form = document.querySelector<HTMLFormElement>("#contact-form");
+	const status = form?.querySelector<HTMLParagraphElement>(".contact-status");
+	const button = form?.querySelector<HTMLButtonElement>("button[type='submit']");
+
+	form?.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		if (!status || !button) return;
+
+		// Mailbox/send infra isn't set up yet — bail out before ever
+		// calling the action, regardless of the button's disabled state.
+		if (form.dataset.enabled !== "true") return;
+
+		button.disabled = true;
+		status.textContent = "Sending…";
+
+		const { error } = await actions.contact(new FormData(form));
+
+		if (error) {
+			status.textContent = isInputError(error)
+				? "Please check the fields above and try again."
+				: "Something went wrong. Please try again later.";
+			button.disabled = false;
+			return;
+		}
+
+		form.reset();
+		status.textContent = "Message sent — we'll be in touch soon.";
+		button.disabled = false;
+	});
+</script>
