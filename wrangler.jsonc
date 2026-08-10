@@ -1,20 +1,20 @@
 {
-	"$schema": "./node_modules/wrangler/config-schema.json",
-	"compatibility_date": "2026-08-07",
-	"compatibility_flags": ["global_fetch_strictly_public"],
-	"name": "golden-tie",
-	"main": "@astrojs/cloudflare/entrypoints/server",
-	"assets": {
-		"directory": "./dist",
-		"binding": "ASSETS"
-	},
-	"observability": {
-		"enabled": true
-	},
-	// Non-secret only — RESEND_API_KEY stays out of this file (git-tracked)
-	// and lives in .dev.vars locally / Cloudflare dashboard secrets in prod.
-	"vars": {
-		"CONTACT_TO_EMAIL": "admin@goldentie.com",
-		"CONTACT_FROM_EMAIL": ""
-	}
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "compatibility_date": "2026-08-07",
+    "compatibility_flags": ["global_fetch_strictly_public"],
+    "name": "golden-tie",
+    "main": "@astrojs/cloudflare/entrypoints/server",
+    "assets": {
+        "directory": "./dist",
+        "binding": "ASSETS",
+    },
+    "observability": {
+        "enabled": true,
+    },
+    // Non-secret only — RESEND_API_KEY stays out of this file (git-tracked)
+    // and lives in .dev.vars locally / Cloudflare dashboard secrets in prod.
+    "vars": {
+        "CONTACT_TO_EMAIL": "admin@goldentie.africa",
+        "CONTACT_FROM_EMAIL": "admin@goldentie.africa",
+    },
 }
