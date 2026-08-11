@@ -15,6 +15,6 @@
     // and lives in .dev.vars locally / Cloudflare dashboard secrets in prod.
     "vars": {
         "CONTACT_TO_EMAIL": "admin@goldentie.africa",
-        "CONTACT_FROM_EMAIL": "admin@goldentie.africa",
+        "CONTACT_FROM_EMAIL": "contact@goldentie.africa",
     },
 }
