@@ -8,12 +8,14 @@ const subsidiaries = [
 		category: "Fintech — Digital Tipping",
 		description:
 			"A digital tipping platform connecting service staff with the customers they serve.",
+		url: "https://play.google.com/store/apps/details?id=bsl.co.ke.briskapplication&hl=en",
 	},
 	{
 		name: "Biodiesel Feedstock Trader",
 		category: "Energy — Feedstock Trading",
 		description:
 			"Sourcing and trading waste-oil feedstock for sustainable biodiesel production.",
+		url: "https://biodiesel.goldentie.africa",
 	},
 	{
 		name: "Training Institute",
@@ -45,7 +47,7 @@ const interests = [
 				</p>
 			</div>
 			<div class="hero-graphic">
-				<NoiseReveal src="/images/hero-placeholder.png" width={640} height={640} />
+				<NoiseReveal src="/images/hero-image.png" width={640} height={640} />
 			</div>
 		</div>
 	</header>
@@ -59,7 +61,27 @@ const interests = [
 						<article class="venture" data-reveal>
 							<p class="eyebrow">{sub.category}</p>
 							<span class="hairline" aria-hidden="true" />
-							<h3 class="venture-name">{sub.name}</h3>
+							<h3 class="venture-name">
+								{sub.url ? (
+									<a class="venture-link" href={sub.url} target="_blank" rel="noopener">
+										<svg
+											class="venture-link-icon"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											aria-hidden="true"
+										>
+											<path d="M9 15 21 3" />
+											<path d="M13 3h8v8" />
+											<path d="M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6" />
+										</svg>
+										{sub.name}
+									</a>
+								) : (
+									sub.name
+								)}
+							</h3>
 							<p class="venture-desc">{sub.description}</p>
 						</article>
 					))
