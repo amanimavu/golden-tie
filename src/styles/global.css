@@ -1,55 +1,55 @@
 :root {
-	--color-ink: #131313;
-	--color-charcoal: #222126;
-	--color-slate: #2b2b2b;
-	--color-gold: #efbf04;
-	--color-amber: #ffc766;
-	--color-yellow: #ffdd00;
-	--color-orange: #f07200;
-	--color-paper: #ffffff;
-	--text-primary: rgba(255, 255, 255, 0.92);
-	--text-muted: rgba(255, 255, 255, 0.6);
+    --color-ink: #131313;
+    --color-charcoal: #222126;
+    --color-slate: #2b2b2b;
+    --color-gold: #efbf04;
+    --color-amber: #ffc766;
+    --color-yellow: #ffdd00;
+    --color-orange: #f07200;
+    --color-paper: #ffffff;
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-muted: rgba(255, 255, 255, 0.6);
 
-	--font-display: "Space Grotesk", sans-serif;
-	--font-body: "Manrope", sans-serif;
+    --font-display: "Space Grotesk", sans-serif;
+    --font-body: "Manrope", sans-serif;
 
-	--content-max: 1180px;
-	/* Clearance for the fixed nav capsule only — the logo is no longer
+    --content-max: 1180px;
+    /* Clearance for the fixed nav capsule only — the logo is no longer
 	   fixed, so this isn't used for body padding, just scroll-margin. */
-	--nav-height: 92px;
-	/* .brand-inline's rendered height (88px logo + space-lg padding on
+    --nav-height: 92px;
+    /* .brand-inline's rendered height (88px logo + space-lg padding on
 	   both sides) — single source of truth, used both to pull the CSR
 	   page-header photo up behind it and to pull #top's fragment-scroll
 	   landing position up so navigating to /#top reveals the logo instead
 	   of landing right at its bottom edge. */
-	--brand-inline-height: 136px;
+    --brand-inline-height: 136px;
 
-	--space-sm: 0.5rem;
-	--space-md: 1rem;
-	--space-lg: 1.5rem;
-	--space-xl: 2rem;
-	--space-2xl: 3rem;
-	--space-3xl: 5rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 5rem;
 }
 
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-	scroll-behavior: smooth;
-	scrollbar-width: thin;
-	scrollbar-color: var(--color-charcoal) var(--color-ink);
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-charcoal) var(--color-ink);
 }
 
 body {
-	position: relative;
-	margin: 0;
-	background: var(--color-ink);
-	color: var(--text-primary);
-	font-family: var(--font-body);
-	font-size: 16px;
-	line-height: 1.6;
+    position: relative;
+    margin: 0;
+    background: var(--color-ink);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
 }
 
 /* #top gets its own value (not --nav-height, which is for clearing the
@@ -58,26 +58,26 @@ body {
    landing point up by exactly that much, revealing the logo above #top
    instead of landing right at its bottom edge. */
 #top {
-	scroll-margin-top: var(--brand-inline-height);
+    scroll-margin-top: var(--brand-inline-height);
 }
 
 #about,
 #subsidiaries {
-	scroll-margin-top: var(--nav-height);
+    scroll-margin-top: var(--nav-height);
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-	background: var(--color-ink);
+    background: var(--color-ink);
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--color-charcoal);
-	border-radius: 999px;
-	border: 2px solid var(--color-ink);
+    background-color: var(--color-charcoal);
+    border-radius: 999px;
+    border: 2px solid var(--color-ink);
 }
 
 h1,
@@ -87,35 +87,35 @@ h3,
 .pill,
 .eyebrow,
 .tag-pill {
-	font-family: var(--font-display);
+    font-family: var(--font-display);
 }
 
 .visually-hidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .wrap {
-	max-width: var(--content-max);
-	margin: 0 auto;
-	padding-inline: var(--space-lg);
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding-inline: var(--space-lg);
 }
 
 a {
-	color: inherit;
+    color: inherit;
 }
 
 a:focus-visible,
 button:focus-visible {
-	outline: 2px solid var(--color-gold);
-	outline-offset: 3px;
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
 }
 
 /* Nav + pills */
@@ -125,261 +125,388 @@ button:focus-visible {
    the hide/reappear timers in BaseLayout's script fade it in place rather
    than it simply leaving the viewport before the fade ever registers. */
 .brand-inline {
-	position: sticky;
-	top: 0;
-	z-index: 2;
-	/* display:flex (not block+inline-flex child) so the box height is
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    /* display:flex (not block+inline-flex child) so the box height is
 	   exactly logo-height + padding — an inline-flex child inside a plain
 	   block otherwise inherits a few extra px from the line box, which
 	   threw off .page-header's negative-margin math below. */
-	display: flex;
-	padding-block: var(--space-lg);
+    display: flex;
+    padding-block: var(--space-lg);
 }
 
 .js .brand-inline {
-	opacity: 0;
-	transition: opacity 200ms ease;
+    opacity: 0;
+    transition: opacity 200ms ease;
 }
 
 .js .brand-inline.is-visible {
-	opacity: 1;
+    opacity: 1;
 }
 
 .wordmark {
-	display: inline-flex;
-	align-items: center;
-	text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
 }
 
 .logo {
-	display: block;
-	height: 88px;
-	width: auto;
+    display: block;
+    height: 88px;
+    width: auto;
 }
 
 .nav-fixed {
-	position: fixed;
-	top: var(--space-lg);
-	left: 0;
-	right: 0;
-	z-index: 100;
-	pointer-events: none;
+    position: fixed;
+    top: var(--space-lg);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    pointer-events: none;
 }
 
 .nav-fixed-inner {
-	display: flex;
-	justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-toggle {
+    display: none;
+    pointer-events: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(19, 19, 19, 0.6);
+    --nav-toggle-blur: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: var(--nav-toggle-blur);
+    backdrop-filter: var(--nav-toggle-blur);
+    cursor: pointer;
+}
+
+.nav-toggle-bar {
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text-primary);
+    transition:
+        transform 200ms ease,
+        opacity 200ms ease;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Fills the entire viewport, independent of the page it opens over — a
+   fixed 100vh would leave a sliver uncovered on mobile browsers whose
+   chrome collapses on scroll, so use the dynamic viewport unit instead. */
+.mobile-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    width: 100vw;
+    height: 100dvh;
+    background: var(--color-ink);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 250ms ease,
+        visibility 250ms ease;
+}
+
+.mobile-drawer.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-drawer-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-block: var(--space-lg);
+}
+
+.mobile-drawer-close {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: none;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2xl);
+    cursor: pointer;
+}
+
+.mobile-drawer-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.mobile-drawer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: var(--space-xl);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.mobile-drawer-links a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    color: var(--color-paper);
+    text-decoration: none;
+}
+
+.mobile-drawer-links a:hover,
+.mobile-drawer-links a:focus-visible {
+    color: var(--color-gold);
+}
+
+.mobile-drawer-links .pill-filled {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+body.drawer-open {
+    overflow: hidden;
+}
+
+@media (min-width: 641px) {
+    .mobile-drawer {
+        display: none;
+    }
 }
 
 .nav-capsule {
-	/* Custom-property indirection: the build minifier collapses the space
+    /* Custom-property indirection: the build minifier collapses the space
 	   between adjacent filter functions (blur(16px)saturate(140%)), which
 	   real browsers reject as an invalid value. Minifiers don't rewrite
 	   custom-property values, so routing through one preserves the space. */
-	--nav-blur: blur(16px) saturate(140%);
-	pointer-events: auto;
-	background: rgba(19, 19, 19, 0.6);
-	-webkit-backdrop-filter: var(--nav-blur);
-	backdrop-filter: var(--nav-blur);
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	border-radius: 999px;
-	padding: 0.75rem 1rem;
+    --nav-blur: blur(16px) saturate(140%);
+    pointer-events: auto;
+    background: rgba(19, 19, 19, 0.6);
+    -webkit-backdrop-filter: var(--nav-blur);
+    backdrop-filter: var(--nav-blur);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.75rem 1rem;
 }
 
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-	.nav-capsule {
-		background: rgba(19, 19, 19, 0.94);
-	}
+@supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+    .nav-capsule {
+        background: rgba(19, 19, 19, 0.94);
+    }
 }
 
 .nav-links {
-	list-style: none;
-	display: flex;
-	align-items: center;
-	gap: var(--space-sm);
-	margin: 0;
-	padding: 0;
-	flex-wrap: wrap;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
 }
 
 .pill {
-	display: inline-flex;
-	align-items: center;
-	padding: 0.55rem 1.25rem;
-	border-radius: 999px;
-	font-size: 0.85rem;
-	font-weight: 500;
-	text-decoration: none;
-	white-space: nowrap;
-	transition:
-		background-color 200ms ease,
-		color 200ms ease,
-		border-color 200ms ease,
-		transform 200ms ease;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+        background-color 200ms ease,
+        color 200ms ease,
+        border-color 200ms ease,
+        transform 200ms ease;
 }
 
 .pill-outline {
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: var(--text-primary);
 }
 
 .pill-outline:hover,
 .pill-outline:focus-visible {
-	border-color: var(--color-gold);
-	color: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
 }
 
 .pill-filled {
-	background: var(--color-gold);
-	color: var(--color-ink);
-	font-weight: 600;
-	border: 1px solid var(--color-gold);
+    background: var(--color-gold);
+    color: var(--color-ink);
+    font-weight: 600;
+    border: 1px solid var(--color-gold);
 }
 
 .pill-filled:hover,
 .pill-filled:focus-visible {
-	background: var(--color-amber);
-	border-color: var(--color-amber);
+    background: var(--color-amber);
+    border-color: var(--color-amber);
 }
 
 .pill-sm {
-	padding: 0.4rem 0.9rem;
-	font-size: 0.78rem;
-}
-
-/* CSR pill label shrinks to "CSR" on mobile (see 640px breakpoint below)
-   so all three nav pills fit on one row instead of wrapping the capsule
-   to two lines and colliding with the hero content beneath it. */
-.csr-label-short {
-	display: none;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.78rem;
 }
 
 /* Hero */
 
 .hero {
-	position: relative;
-	overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 
 .hero-grid {
-	position: relative;
-	min-height: 620px;
-	padding-block: var(--space-2xl) var(--space-3xl);
+    position: relative;
+    min-height: 620px;
+    padding-block: var(--space-2xl) var(--space-3xl);
 }
 
 .hero-content {
-	position: relative;
-	z-index: 2;
-	max-width: 42rem;
-	/* No interactive elements in here — let cursor events pass through to
+    position: relative;
+    z-index: 2;
+    max-width: 42rem;
+    /* No interactive elements in here — let cursor events pass through to
 	   the graphic layer underneath so the noise-reveal effect still
 	   responds to movement over the text, not just the empty page. */
-	pointer-events: none;
+    pointer-events: none;
 }
 
 .hero-graphic {
-	position: absolute;
-	top: 50%;
-	right: 0%;
-	z-index: 1;
-	width: min(580px, 78vw);
-	height: min(580px, 78vw);
-	opacity: 0.8;
-	transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    z-index: 1;
+    width: min(580px, 78vw);
+    height: min(580px, 78vw);
+    opacity: 0.8;
+    transform: translateY(-50%);
 }
 
 @media (max-width: 900px) {
-	/* min-height:620px is sized for the desktop layout (absolutely
+    /* min-height:620px is sized for the desktop layout (absolutely
 	   positioned graphic needing room to sit beside the text) — once
 	   everything stacks in normal flow on mobile, it just reserves dead
 	   space at the bottom of the section. Let it size to content instead,
 	   and tighten the block padding to match. */
-	.hero-grid {
-		min-height: auto;
-		padding-block: var(--space-xl) var(--space-lg);
-	}
+    .hero-grid {
+        min-height: auto;
+        padding-block: var(--space-xl) var(--space-lg);
+    }
 
-	.hero-graphic {
-		position: relative;
-		top: auto;
-		right: auto;
-		transform: none;
-		width: min(360px, 80vw);
-		height: min(360px, 80vw);
-		margin-inline: auto;
-		margin-top: var(--space-lg);
-	}
+    .hero-graphic {
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: none;
+        width: min(360px, 80vw);
+        height: min(360px, 80vw);
+        margin-inline: auto;
+        margin-top: var(--space-lg);
+    }
 
-	/* Desktop section rhythm (--space-3xl = 80px per side) is way too
+    /* Desktop section rhythm (--space-3xl = 80px per side) is way too
 	   generous stacked on a narrow phone screen — compress it. */
-	.venture {
-		padding-block: var(--space-xl);
-	}
+    .venture {
+        padding-block: var(--space-xl);
+    }
 
-	.about {
-		padding-block: var(--space-2xl);
-	}
+    .about {
+        padding-block: var(--space-2xl);
+    }
 
-	.site-footer {
-		padding-block: var(--space-xl);
-	}
+    .site-footer {
+        padding-block: var(--space-xl);
+    }
 }
 
 .hero-headline {
-	position: relative;
-	z-index: 1;
-	font-weight: 700;
-	font-size: clamp(2.75rem, 7vw, 6rem);
-	line-height: 0.98;
-	letter-spacing: -0.02em;
-	color: var(--color-paper);
-	margin: var(--space-xl) 0 var(--space-lg);
+    position: relative;
+    z-index: 1;
+    font-weight: 700;
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--color-paper);
+    margin: var(--space-xl) 0 var(--space-lg);
 }
 
 .hero-sub {
-	position: relative;
-	z-index: 1;
-	max-width: 42ch;
-	font-size: 1.1rem;
-	color: var(--text-muted);
-	margin: 0;
+    position: relative;
+    z-index: 1;
+    max-width: 42ch;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 @keyframes rise {
-	from {
-		opacity: 0;
-		transform: translateY(16px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .wordmark,
 .nav-links li,
 .hero-headline,
 .hero-sub {
-	animation: rise 550ms ease both;
+    animation: rise 550ms ease both;
 }
 
 .nav-links li:nth-child(1) {
-	animation-delay: 60ms;
+    animation-delay: 60ms;
 }
 .nav-links li:nth-child(2) {
-	animation-delay: 120ms;
+    animation-delay: 120ms;
 }
 .nav-links li:nth-child(3) {
-	animation-delay: 180ms;
+    animation-delay: 180ms;
 }
 .nav-links li:nth-child(4) {
-	animation-delay: 240ms;
+    animation-delay: 240ms;
 }
 .hero-headline {
-	animation-delay: 260ms;
+    animation-delay: 260ms;
 }
 .hero-sub {
-	animation-delay: 360ms;
+    animation-delay: 360ms;
 }
 
 /* Page header (non-hero pages, e.g. CSR) */
@@ -388,622 +515,751 @@ button:focus-visible {
    legible over whatever the source image looks like, darkest at the
    bottom where the copy sits, clearing up toward the top of the frame. */
 .page-header {
-	position: relative;
-	overflow: hidden;
-	display: flex;
-	align-items: flex-end;
-	min-height: 560px;
-	/* Pull up behind .brand-inline so the photo starts at the very top of
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    min-height: 560px;
+    /* Pull up behind .brand-inline so the photo starts at the very top of
 	   the page instead of below the logo row. */
-	margin-top: calc(var(--brand-inline-height) * -1);
-	padding-block: calc(var(--space-2xl) + var(--brand-inline-height)) var(--space-3xl);
+    margin-top: calc(var(--brand-inline-height) * -1);
+    padding-block: calc(var(--space-2xl) + var(--brand-inline-height))
+        var(--space-3xl);
 }
 
 .page-header-bg {
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	/* Mirrored so the busier subject matter lands on the right, away from
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Mirrored so the busier subject matter lands on the right, away from
 	   the headline/copy on the left. */
-	transform: scaleX(-1);
-	filter: grayscale(1) contrast(1.05) brightness(0.75);
+    transform: scaleX(-1);
+    filter: grayscale(1) contrast(1.05) brightness(0.75);
 }
 
 .page-header-scrim {
-	position: absolute;
-	inset: 0;
-	z-index: 1;
-	/* Reaches fully-opaque ink at the very bottom edge (0%) so the last
-	   visible pixel row is solid color, not photo — matches the flat
-	   background of the section beneath it with no visible seam. */
-	background: linear-gradient(
-		to top,
-		var(--color-ink) 0%,
-		rgba(19, 19, 19, 0.92) 20%,
-		rgba(19, 19, 19, 0.5) 50%,
-		rgba(19, 19, 19, 0.05) 90%,
-		transparent 100%
-	);
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    /* Two stacked gradients: the first reaches fully-opaque ink at the very
+	   bottom edge (0%) so the last visible pixel row is solid color, not
+	   photo — matches the flat background of the section beneath it with no
+	   visible seam. The second darkens the top edge instead, independent of
+	   photo content, so the sticky logo/nav (which sits directly on top of
+	   the photo here, unlike every other page) stays legible. */
+    background:
+        linear-gradient(
+            to top,
+            var(--color-ink) 0%,
+            rgba(19, 19, 19, 0.92) 20%,
+            rgba(19, 19, 19, 0.5) 50%,
+            rgba(19, 19, 19, 0.05) 90%,
+            transparent 100%
+        ),
+        linear-gradient(
+            to bottom,
+            rgba(19, 19, 19, 0.7) 0%,
+            rgba(19, 19, 19, 0.25) 18%,
+            transparent 34%
+        );
 }
 
 .page-header-grid {
-	position: relative;
-	z-index: 2;
-	width: 100%;
+    position: relative;
+    z-index: 2;
+    width: 100%;
 }
 
 .page-header-content {
-	max-width: 44rem;
+    max-width: 44rem;
+}
+
+/* Blog post titles run longer than CSR's fixed copy — the 44rem column
+   above wraps them down to one word per line. Give this variant more
+   room. */
+.post-photo-header .page-header-content {
+    max-width: min(56rem, 90%);
 }
 
 .page-header .eyebrow {
-	margin-bottom: var(--space-md);
+    margin-bottom: var(--space-md);
 }
 
 .page-title {
-	font-weight: 700;
-	font-size: clamp(2.75rem, 6.5vw, 5.25rem);
-	line-height: 0.98;
-	letter-spacing: -0.02em;
-	color: var(--color-paper);
-	margin: 0 0 var(--space-lg);
+    font-weight: 700;
+    font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--color-paper);
+    margin: 0 0 var(--space-lg);
 }
 
 .page-lede {
-	max-width: 55ch;
-	font-size: 1.1rem;
-	color: var(--text-muted);
-	margin: 0;
+    max-width: 55ch;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 /* Subsidiaries */
 
 .subsidiaries {
-	padding-block: var(--space-xl) 0;
+    padding-block: var(--space-xl) 0;
 }
 
 .venture {
-	padding-block: var(--space-3xl);
-	border-top: 1px solid rgba(255, 255, 255, 0.08);
-	opacity: 1;
-	transform: none;
+    padding-block: var(--space-3xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    opacity: 1;
+    transform: none;
 }
 
 .venture:first-child {
-	border-top: none;
+    border-top: none;
 }
 
 .eyebrow {
-	color: var(--color-gold);
-	text-transform: uppercase;
-	letter-spacing: 0.14em;
-	font-size: 0.78rem;
-	font-weight: 500;
-	margin: 0;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin: 0;
 }
 
 .hairline {
-	display: block;
-	width: 48px;
-	height: 2px;
-	background: var(--color-gold);
-	margin: var(--space-md) 0 var(--space-lg);
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--color-gold);
+    margin: var(--space-md) 0 var(--space-lg);
 }
 
 .venture-name {
-	font-weight: 700;
-	font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-	line-height: 1.02;
-	letter-spacing: -0.02em;
-	color: var(--color-paper);
-	margin: 0 0 var(--space-lg);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--color-paper);
+    margin: 0 0 var(--space-lg);
 }
 
 .venture-desc {
-	max-width: 34ch;
-	color: var(--text-muted);
-	font-size: 1.05rem;
-	margin: 0;
+    max-width: 34ch;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin: 0;
 }
 
-.venture-name {
-	position: relative;
-}
-
+/* Icon sits inline before the text instead of absolutely positioned in
+   .wrap's gutter — a negative left offset put it outside .venture-link's
+   own box, and any content positioned past the viewport's left edge is
+   just clipped with no way to scroll to it (not contained by .wrap, which
+   doesn't clip its own overflow). Flex keeps it in-flow, so it can never
+   be cut off at any heading size or screen width. */
 .venture-link {
-	position: relative;
-	color: inherit;
-	text-decoration: none;
+    display: inline-flex;
+    align-items: start;
+    gap: 0.4em;
+    color: inherit;
+    text-decoration: none;
 }
 
 .venture-link-icon {
-	position: absolute;
-	left: 0;
-	top: 50%;
-	width: 0.6em;
-	height: 0.6em;
-	color: var(--color-paper);
-	opacity: 0.45;
-	transform: translate(-140%, -60%);
-	transition:
-		opacity 200ms ease,
-		transform 200ms ease;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--color-paper);
+    opacity: 0.45;
+    transition:
+        opacity 200ms ease,
+        transform 200ms ease;
 }
 
 .venture-link:hover .venture-link-icon,
 .venture-link:focus-visible .venture-link-icon {
-	opacity: 1;
-	transform: translate(-180%, -60%);
+    opacity: 1;
+    transform: scale(1.15);
 }
 
 .js .venture {
-	opacity: 0;
-	transform: translateY(28px);
-	transition:
-		opacity 700ms ease,
-		transform 700ms ease;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 700ms ease,
+        transform 700ms ease;
 }
 
 .js .venture.is-visible {
-	opacity: 1;
-	transform: none;
+    opacity: 1;
+    transform: none;
 }
 
 /* About */
 
 .about {
-	padding-block: var(--space-3xl);
-	background: var(--color-paper);
+    padding-block: var(--space-3xl);
+    background: var(--color-paper);
 }
 
 h2 {
-	font-size: clamp(1.75rem, 3vw, 2.5rem);
-	font-weight: 700;
-	letter-spacing: -0.01em;
-	color: var(--color-paper);
-	margin: 0 0 var(--space-lg);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-paper);
+    margin: 0 0 var(--space-lg);
 }
 
 .about h2 {
-	color: var(--color-ink);
+    color: var(--color-ink);
 }
 
 .about p {
-	max-width: 60ch;
-	color: rgba(19, 19, 19, 0.7);
-	font-size: 1.05rem;
+    max-width: 60ch;
+    color: rgba(19, 19, 19, 0.7);
+    font-size: 1.05rem;
 }
 
 .about .accent {
-	font-weight: 700;
-	color: var(--color-ink);
+    font-weight: 700;
+    color: var(--color-ink);
 }
 
 /* Contact */
 
 .contact-section {
-	background: var(--color-ink);
-	padding-block: var(--space-3xl);
+    background: var(--color-ink);
+    padding-block: var(--space-3xl);
 }
 
 .contact-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: var(--space-2xl);
-	align-items: start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
 }
 
 .contact-intro h2 {
-	margin: var(--space-sm) 0 var(--space-md);
+    margin: var(--space-sm) 0 var(--space-md);
 }
 
 .contact-intro p:not(.eyebrow) {
-	max-width: 42ch;
-	color: var(--text-muted);
-	font-size: 1.05rem;
+    max-width: 42ch;
+    color: var(--text-muted);
+    font-size: 1.05rem;
 }
 
 .contact-form {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
 }
 
 .contact-form label {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-sm);
-	font-size: 0.9rem;
-	color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
 .contact-form input,
 .contact-form textarea {
-	font: inherit;
-	color: var(--text-primary);
-	background: var(--color-charcoal);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 0.5rem;
-	padding: 0.75rem 1rem;
-	resize: vertical;
+    font: inherit;
+    color: var(--text-primary);
+    background: var(--color-charcoal);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    resize: vertical;
 }
 
 .contact-form input:focus-visible,
 .contact-form textarea:focus-visible {
-	outline: 2px solid var(--color-gold);
-	outline-offset: 2px;
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
 }
 
 .contact-form button {
-	align-self: flex-start;
-	border: 1px solid var(--color-gold);
-	cursor: pointer;
+    align-self: flex-start;
+    border: 1px solid var(--color-gold);
+    cursor: pointer;
 }
 
 .contact-form button:disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .contact-status {
-	min-height: 1.2em;
-	margin: 0;
-	font-size: 0.9rem;
-	color: var(--color-amber);
+    min-height: 1.2em;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-amber);
 }
 
 /* Spam honeypot — off-screen, not display:none, so bots that skip hidden
    fields via computed style still get caught, but it never affects layout
    or is reachable via tab/keyboard for real visitors. */
 .contact-honeypot {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
-	clip: rect(0 0 0 0);
-	white-space: nowrap;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
 }
 
 @media (max-width: 900px) {
-	.contact-grid {
-		grid-template-columns: 1fr;
-	}
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .interest-list {
-	list-style: none;
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0;
-	margin: var(--space-xl) 0 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: var(--space-xl) 0 0;
 }
 
 .interest-list li {
-	padding-inline: var(--space-md);
-	border-left: 1px solid rgba(19, 19, 19, 0.15);
-	color: rgba(19, 19, 19, 0.7);
-	font-size: 0.95rem;
+    padding-inline: var(--space-md);
+    border-left: 1px solid rgba(19, 19, 19, 0.15);
+    color: rgba(19, 19, 19, 0.7);
+    font-size: 0.95rem;
 }
 
 .interest-list li:first-child {
-	padding-left: 0;
-	border-left: none;
+    padding-left: 0;
+    border-left: none;
 }
 
 /* Footer */
 
 .site-footer {
-	background: var(--color-charcoal);
-	border-top: 1px solid rgba(255, 255, 255, 0.08);
-	padding-block: var(--space-2xl);
+    background: var(--color-charcoal);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-block: var(--space-2xl);
 }
 
 .footer-inner {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
 }
 
 .footer-brand {
-	display: flex;
-	align-items: center;
-	gap: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
 }
 
 .footer-brand-text p {
-	margin: 0.25rem 0;
-	font-size: 0.85rem;
-	color: var(--text-muted);
+    margin: 0.25rem 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
 .footer-logo {
-	height: 88px;
+    height: 88px;
 }
 
 .footer-brand .contact {
-	color: var(--color-amber);
+    color: var(--color-amber);
 }
 
 .footer-brand .contact a {
-	color: inherit;
-	text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 .footer-brand .contact a:hover,
 .footer-brand .contact a:focus-visible {
-	text-decoration: underline;
+    text-decoration: underline;
+}
+
+.footer-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xl);
+}
+
+.footer-col-heading {
+    color: var(--color-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-md);
+}
+
+.footer-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.footer-nav a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus-visible {
+    color: var(--color-gold);
+    text-decoration: underline;
+}
+
+.footer-contact {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.footer-contact a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-contact a:hover,
+.footer-contact a:focus-visible {
+    color: var(--color-gold);
+    text-decoration: underline;
 }
 
 .social-links {
-	list-style: none;
-	display: flex;
-	gap: var(--space-md);
-	margin: 0;
-	padding: 0;
+    list-style: none;
+    display: flex;
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
 }
 
 .social-links a {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	color: var(--text-muted);
-	transition:
-		color 200ms ease,
-		border-color 200ms ease,
-		transform 200ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: var(--text-muted);
+    transition:
+        color 200ms ease,
+        border-color 200ms ease,
+        transform 200ms ease;
 }
 
 .social-links a:hover,
 .social-links a:focus-visible {
-	color: var(--color-gold);
-	border-color: var(--color-gold);
-	transform: scale(1.08);
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+    transform: scale(1.08);
 }
 
 .social-links svg {
-	width: 18px;
-	height: 18px;
+    width: 18px;
+    height: 18px;
 }
 
 @media (max-width: 900px) {
-	.pill-filled {
-		font-size: 0.78rem;
-	}
+    .pill-filled {
+        font-size: 0.78rem;
+    }
 
-	/* Two-column grid instead of the ragged inline-wrap flow — the
+    /* Two-column grid instead of the ragged inline-wrap flow — the
 	   border-left dividers were designed for horizontal adjacency, not
 	   grid cells, so drop them here rather than have a stray line only
 	   on some items. */
-	.interest-list {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-sm) var(--space-lg);
-	}
+    .interest-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm) var(--space-lg);
+    }
 
-	.interest-list li {
-		display: flex;
-		align-items: flex-start;
-		padding-inline: 0;
-		border-left: none;
-	}
+    .interest-list li {
+        display: flex;
+        align-items: flex-start;
+        padding-inline: 0;
+        border-left: none;
+    }
 
-	/* Small gold dash instead of a default bullet — matches the
+    /* Small gold dash instead of a default bullet — matches the
 	   .hairline accent motif used under the About eyebrow. Sits at the
 	   start of the first line only (not centered against the whole
 	   block), so wrapped two-line items don't pull it down to the
 	   vertical middle. */
-	.interest-list li::before {
-		content: "";
-		flex: 0 0 auto;
-		width: 10px;
-		height: 2px;
-		margin-top: 0.6em;
-		margin-right: var(--space-sm);
-		background: var(--color-gold);
-	}
+    .interest-list li::before {
+        content: "";
+        flex: 0 0 auto;
+        width: 10px;
+        height: 2px;
+        margin-top: 0.6em;
+        margin-right: var(--space-sm);
+        background: var(--color-gold);
+    }
 
-	/* Center the footer instead of the desktop brand-left/social-right
+    /* Center the footer instead of the desktop brand-left/social-right
 	   split — logo stacked above text, everything centered. */
-	.footer-inner {
-		flex-direction: column;
-		text-align: center;
-	}
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
 
-	.footer-brand {
-		flex-direction: column;
-	}
+    .footer-brand {
+        align-items: center;
+    }
+
+    .footer-columns {
+        justify-content: center;
+    }
+
+    .footer-nav,
+    .footer-contact {
+        align-items: center;
+    }
 }
 
 @media (max-width: 640px) {
-	.nav-links li:nth-child(4) .pill-filled {
-		padding-inline: 0.9rem;
-	}
+    .nav-capsule {
+        display: none;
+    }
 
-	.csr-label-full {
-		display: none;
-	}
+    .nav-toggle {
+        display: flex;
+    }
 
-	.csr-label-short {
-		display: inline;
-	}
+    /* Mobile: drop the logo, keep just the hamburger toggle —
+	   display:none overrides the sticky/opacity JS state outright. */
+    .brand-inline {
+        display: none;
+    }
 
-	/* Mobile: drop the logo, keep just the nav capsule (About/Subsidiaries/
-	   CSR) — display:none overrides the sticky/opacity JS state outright. */
-	.brand-inline {
-		display: none;
-	}
-
-	/* With the logo gone, nothing in the flow reserves space for the
-	   fixed nav capsule anymore (previously .brand-inline's own height
+    /* With the logo gone, nothing in the flow reserves space for the
+	   fixed nav toggle anymore (previously .brand-inline's own height
 	   did that job incidentally). Give content explicit clearance instead. */
-	.hero-grid {
-		padding-top: var(--nav-height);
-	}
+    .hero-grid {
+        padding-top: var(--nav-height);
+    }
 
-	/* The CSR page-header's negative-margin trick specifically pulls the
+    /* The CSR page-header's negative-margin trick specifically pulls the
 	   photo up behind the logo — with the logo hidden here, that math no
-	   longer applies, so undo it and use the same nav-capsule clearance
+	   longer applies, so undo it and use the same nav-toggle clearance
 	   as the hero instead. */
-	.page-header {
-		margin-top: 0;
-		padding-top: var(--nav-height);
-	}
-
-	/* Full-width nav bar with evenly-spaced items, instead of a
-	   content-sized capsule floated to the right. */
-	.nav-capsule {
-		width: 100%;
-	}
-
-	.nav-links {
-		justify-content: space-between;
-	}
+    .page-header {
+        margin-top: 0;
+        padding-top: var(--nav-height);
+    }
 }
 
 @media (max-width: 360px) {
-	/* Subsidiaries dropped from the nav only at this very narrow width —
+    /* Subsidiaries dropped from the nav only at this very narrow width —
 	   it sits right after the hero already, so it needs the jump-link
 	   least of the four. About, Contact, and CSR (a separate page,
 	   unreachable any other way) stay. */
-	.nav-links li:nth-child(2) {
-		display: none;
-	}
+    .nav-links li:nth-child(2) {
+        display: none;
+    }
 
-	/* At very narrow widths (e.g. 320px), .wrap's padding-inline eats
+    /* At very narrow widths (e.g. 320px), .wrap's padding-inline eats
 	   into the nav capsule's available width enough to force the pills
 	   onto two rows even with the CSR label abbreviated. Tighten it. */
-	.wrap {
-		padding-inline: var(--space-md);
-	}
+    .wrap {
+        padding-inline: var(--space-md);
+    }
 }
 
 /* Blog */
 
 .blog-header {
-	padding-block: var(--space-2xl) var(--space-3xl);
+    padding-block: var(--space-2xl) var(--space-3xl);
+}
+
+.blog-header-content {
+    max-width: 42rem;
 }
 
 .blog-post-header {
-	padding-block: var(--space-2xl) var(--space-xl);
+    padding-block: var(--space-2xl) var(--space-xl);
 }
 
 .blog-back {
-	display: inline-flex;
-	margin-bottom: var(--space-lg);
+    display: inline-flex;
+    margin-bottom: var(--space-lg);
 }
 
 .blog-list-section {
-	padding-block: var(--space-xl) var(--space-3xl);
+    padding-block: var(--space-xl) var(--space-3xl);
 }
 
 .blog-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .blog-empty {
-	color: var(--text-muted);
-	font-size: 1.05rem;
+    color: var(--text-muted);
+    font-size: 1.05rem;
 }
 
 .blog-list .venture-link:hover,
 .blog-list .venture-link:focus-visible {
-	color: var(--color-gold);
+    color: var(--color-gold);
+}
+
+.blog-post-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-xl);
+}
+
+.blog-post-thumb {
+    display: block;
+    flex: none;
+    width: clamp(180px, 26vw, 300px);
+    aspect-ratio: 1 / 1;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.blog-post-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+}
+
+.blog-post-content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.blog-post-item .venture-name {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    margin-bottom: var(--space-sm);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.blog-post-item .venture-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+}
+
+@media (max-width: 640px) {
+    .blog-post-item {
+        gap: var(--space-lg);
+    }
+
+    .blog-post-thumb {
+        width: clamp(72px, 22vw, 96px);
+    }
+
+    .blog-post-item .venture-name {
+        font-size: clamp(1.5rem, 6vw, 2.25rem);
+    }
 }
 
 .post-article {
-	padding-block: var(--space-lg) var(--space-3xl);
-}
-
-.post-cover {
-	display: block;
-	width: 100%;
-	height: auto;
-	border-radius: 1rem;
-	margin-bottom: var(--space-2xl);
+    padding-block: var(--space-lg) var(--space-3xl);
 }
 
 .post-body {
-	max-width: 65ch;
-	font-size: 1.05rem;
+    max-width: 65ch;
+    font-size: 1.05rem;
 }
 
 .post-body p {
-	margin: 0 0 var(--space-lg);
-	color: var(--text-primary);
+    margin: 0 0 var(--space-lg);
+    color: var(--text-primary);
 }
 
 .post-body h2,
 .post-body h3 {
-	color: var(--color-paper);
-	margin: var(--space-2xl) 0 var(--space-md);
+    color: var(--color-paper);
+    margin: var(--space-2xl) 0 var(--space-md);
 }
 
 .post-body a {
-	color: var(--color-gold);
-	text-decoration: underline;
-	text-underline-offset: 2px;
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
 
 .post-body ul,
 .post-body ol {
-	margin: 0 0 var(--space-lg);
-	padding-left: 1.25em;
-	color: var(--text-primary);
+    margin: 0 0 var(--space-lg);
+    padding-left: 1.25em;
+    color: var(--text-primary);
 }
 
 .post-body li {
-	margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-sm);
 }
 
 .post-body blockquote {
-	margin: var(--space-lg) 0;
-	padding-left: var(--space-lg);
-	border-left: 2px solid var(--color-gold);
-	color: var(--text-muted);
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-lg);
+    border-left: 2px solid var(--color-gold);
+    color: var(--text-muted);
 }
 
 .post-body img {
-	max-width: 100%;
-	border-radius: 0.5rem;
+    max-width: 100%;
+    border-radius: 0.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
+    html {
+        scroll-behavior: auto;
+    }
 
-	.wordmark,
-	.nav-links li,
-	.hero-headline,
-	.hero-sub {
-		animation: none !important;
-		opacity: 1 !important;
-		transform: none !important;
-	}
+    .wordmark,
+    .nav-links li,
+    .hero-headline,
+    .hero-sub {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
 
-	.js .venture {
-		opacity: 1 !important;
-		transform: none !important;
-		transition: none !important;
-	}
+    .js .venture {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
 
-	.js .brand-inline {
-		opacity: 1 !important;
-		transition: none !important;
-	}
+    .js .brand-inline {
+        opacity: 1 !important;
+        transition: none !important;
+    }
 
-	.social-links a {
-		transition: none !important;
-	}
+    .social-links a {
+        transition: none !important;
+    }
 }
