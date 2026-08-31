@@ -1,6 +1,9 @@
 ---
 export interface Props {
 	src: string;
+	/** Swapped in instead of `src` on narrow viewports (checked once, at
+	 * load) — e.g. a simpler emblem mark in place of a busier desktop image. */
+	mobileSrc?: string;
 	width?: number;
 	height?: number;
 	/** Background/"unlit pixel" color — defaults to the brand's --color-ink
@@ -8,7 +11,7 @@ export interface Props {
 	darkColor?: string;
 }
 
-const { src, width = 430, height = 430, darkColor = "#131313" } = Astro.props;
+const { src, mobileSrc, width = 430, height = 430, darkColor = "#131313" } = Astro.props;
 ---
 
 <div class="noise-reveal" style={`--nr-size: ${width}px; --nr-dark: ${darkColor}`}>
@@ -17,6 +20,7 @@ const { src, width = 430, height = 430, darkColor = "#131313" } = Astro.props;
 		width={width}
 		height={height}
 		data-src={src}
+		data-mobile-src={mobileSrc}
 		data-dark={darkColor}
 		aria-hidden="true"
 	></canvas>
@@ -85,7 +89,9 @@ const { src, width = 430, height = 430, darkColor = "#131313" } = Astro.props;
 	 * in brightness on a slow cadence, and scatter away from the cursor
 	 * (scaled by how fast it's moving) before springing back home. */
 	function setupNoiseReveal(canvas: HTMLCanvasElement) {
-		const src = canvas.dataset.src;
+		const mobileSrc = canvas.dataset.mobileSrc;
+		const isMobile = window.matchMedia("(max-width: 640px)").matches;
+		const src = (isMobile && mobileSrc) || canvas.dataset.src;
 		if (!src) return;
 		const [darkR, darkG, darkB] = hexToRgb(canvas.dataset.dark ?? "#131313");
 
