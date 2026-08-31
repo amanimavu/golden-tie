@@ -1,0 +1,65 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPostBySlug, coverImageUrl } from "../../lib/directus";
+
+const { slug } = Astro.params;
+const post = slug ? await getPostBySlug(slug) : null;
+
+if (!post) {
+	return new Response(null, { status: 404 });
+}
+
+const cover = coverImageUrl(post);
+const dateFormatter = new Intl.DateTimeFormat("en", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<BaseLayout title={`${post.title} — Golden Tie Limited`} description={post.excerpt}>
+	{
+		cover ? (
+			<header class="page-header post-photo-header" id="top">
+				<img class="page-header-bg" src={cover} alt="" />
+				<div class="page-header-scrim" aria-hidden="true" />
+				<div class="wrap page-header-grid">
+					<div class="page-header-content">
+						<a class="pill pill-outline blog-back" href="/blogs">
+							&larr; Blog
+						</a>
+						<p class="eyebrow">
+							{dateFormatter.format(new Date(post.publish_date))}
+							{post.tags.length > 0 && ` — ${post.tags.join(", ")}`}
+						</p>
+						<h1 class="page-title">{post.title}</h1>
+					</div>
+				</div>
+			</header>
+		) : (
+			<header class="blog-post-header" id="top">
+				<div class="wrap">
+					<a class="pill pill-outline blog-back" href="/blogs">
+						&larr; Blog
+					</a>
+					<p class="eyebrow">
+						{dateFormatter.format(new Date(post.publish_date))}
+						{post.tags.length > 0 && ` — ${post.tags.join(", ")}`}
+					</p>
+					<h1 class="page-title">{post.title}</h1>
+				</div>
+			</header>
+		)
+	}
+
+	<main>
+		<article class="post-article">
+			<div class="wrap">
+				{/* Body is admin-authored rich text from Directus, not visitor input. */}
+				<div class="post-body" set:html={post.body} />
+			</div>
+		</article>
+	</main>
+</BaseLayout>

@@ -1,0 +1,74 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPosts, coverImageUrl } from "../../lib/directus";
+
+const posts = await getPosts();
+
+const dateFormatter = new Intl.DateTimeFormat("en", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<BaseLayout
+	title="Blog — Golden Tie Limited"
+	description="News and updates from Golden Tie Limited and its ventures."
+>
+	<header class="blog-header" id="top">
+		<div class="wrap blog-header-content">
+			<h1 class="page-title">News &amp; updates</h1>
+			<p class="page-lede">
+				Announcements and updates from Golden Tie Limited and its ventures.
+			</p>
+		</div>
+	</header>
+
+	<main>
+		<section class="blog-list-section" aria-labelledby="posts-heading">
+			<h2 id="posts-heading" class="visually-hidden">Posts</h2>
+			<div class="wrap">
+				{
+					posts.length === 0 ? (
+						<p class="blog-empty">No posts yet — check back soon.</p>
+					) : (
+						<ul class="blog-list">
+							{posts.map((post) => {
+								const cover = coverImageUrl(post);
+								return (
+									<li class="venture blog-post-item" data-reveal>
+										{cover && (
+											<a
+												class="blog-post-thumb"
+												href={`/blogs/${post.slug}`}
+												tabindex="-1"
+												aria-hidden="true"
+											>
+												<img src={cover} alt="" loading="lazy" />
+											</a>
+										)}
+										<div class="blog-post-content">
+											<p class="eyebrow">
+												{dateFormatter.format(new Date(post.publish_date))}
+												{post.tags.length > 0 && ` — ${post.tags.join(", ")}`}
+											</p>
+											<span class="hairline" aria-hidden="true" />
+											<h3 class="venture-name">
+												<a class="venture-link" href={`/blogs/${post.slug}`}>
+													{post.title}
+												</a>
+											</h3>
+											<p class="venture-desc">{post.excerpt}</p>
+										</div>
+									</li>
+								);
+							})}
+						</ul>
+					)
+				}
+			</div>
+		</section>
+	</main>
+</BaseLayout>

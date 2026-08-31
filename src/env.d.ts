@@ -18,5 +18,9 @@ declare namespace Cloudflare {
 		RESEND_API_KEY: string;
 		CONTACT_TO_EMAIL: string;
 		CONTACT_FROM_EMAIL: string;
+		// Blog content source — not provisioned yet. DIRECTUS_TOKEN only
+		// needed if the posts collection isn't publicly readable.
+		DIRECTUS_URL?: string;
+		DIRECTUS_TOKEN?: string;
 	}
 }
