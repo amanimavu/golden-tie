@@ -685,6 +685,20 @@ body.drawer-open {
     transform: scale(1.15);
 }
 
+@media (min-width: 641px) {
+    /* Desktop has room to scale the icon with .venture-name's display-size
+       font instead of the fixed mobile size. */
+    .venture-link-icon {
+        width: 0.6em;
+        height: 0.6em;
+    }
+
+    .venture-link:hover .venture-link-icon,
+    .venture-link:focus-visible .venture-link-icon {
+        transform: scale(1.1);
+    }
+}
+
 .js .venture {
     opacity: 0;
     transform: translateY(28px);
