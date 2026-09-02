@@ -1,7 +1,14 @@
 {
     "$schema": "./node_modules/wrangler/config-schema.json",
     "compatibility_date": "2026-08-07",
-    "compatibility_flags": ["global_fetch_strictly_public"],
+    // `global_fetch_strictly_public` removed so local dev can reach the
+    // Directus CMS at http://goldentiecms.local (a private address the flag
+    // blocks). Safe here: the only fetch targets are api.resend.com
+    // (hardcoded) and DIRECTUS_URL (config, never user input) — no
+    // user-controlled fetch URL to protect against. Restore it (or move it
+    // to an `env.production` block deployed with `wrangler deploy --env
+    // production`) if a user-influenced fetch is ever added.
+    "compatibility_flags": [],
     "name": "golden-tie",
     "main": "@astrojs/cloudflare/entrypoints/server",
     "assets": {
@@ -16,5 +23,6 @@
     "vars": {
         "CONTACT_TO_EMAIL": "admin@goldentie.africa",
         "CONTACT_FROM_EMAIL": "contact@goldentie.africa",
+        "DIRECTUS_URL": "http://goldentiecms.local",
     },
 }

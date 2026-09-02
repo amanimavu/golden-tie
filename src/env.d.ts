@@ -18,9 +18,11 @@ declare namespace Cloudflare {
 		RESEND_API_KEY: string;
 		CONTACT_TO_EMAIL: string;
 		CONTACT_FROM_EMAIL: string;
-		// Blog content source — not provisioned yet. DIRECTUS_TOKEN only
-		// needed if the posts collection isn't publicly readable.
-		DIRECTUS_URL?: string;
-		DIRECTUS_TOKEN?: string;
+		// Blog content source. DIRECTUS_URL is a non-secret var in
+		// wrangler.jsonc; DIRECTUS_API_KEY is a secret (.dev.vars locally /
+		// dashboard secret in prod) — only needed if the posts collection
+		// isn't publicly readable.
+		DIRECTUS_URL: string;
+		DIRECTUS_API_KEY?: string;
 	}
 }
