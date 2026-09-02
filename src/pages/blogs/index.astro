@@ -1,9 +1,8 @@
 ---
-export const prerender = false;
-
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPosts, coverImageUrl } from "../../lib/directus";
 
+// Prerendered at build time from Directus. Rebuild to pick up new posts.
 const posts = await getPosts();
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
