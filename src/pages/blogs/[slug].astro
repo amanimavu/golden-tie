@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPosts, coverImageUrl, type Post } from "../../lib/directus";
@@ -28,7 +29,16 @@ const dateFormatter = new Intl.DateTimeFormat("en", {
 	{
 		cover ? (
 			<header class="page-header post-photo-header" id="top">
-				<img class="page-header-bg" src={cover} alt="" />
+				<Image
+					class="page-header-bg"
+					src={cover}
+					inferSize
+					widths={[768, 1280, 1920]}
+					sizes="100vw"
+					alt=""
+					loading="eager"
+					fetchpriority="high"
+				/>
 				<div class="page-header-scrim" aria-hidden="true" />
 				<div class="wrap page-header-grid">
 					<div class="page-header-content">

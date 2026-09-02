@@ -1,29 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NoiseReveal from "../components/NoiseReveal.astro";
+import { getSubsidiaries } from "../lib/directus";
 
-const subsidiaries = [
-	{
-		name: "Tipping App",
-		category: "Fintech — Digital Tipping",
-		description:
-			"A digital tipping platform connecting service staff with the customers they serve.",
-		url: "https://play.google.com/store/apps/details?id=bsl.co.ke.briskapplication&hl=en",
-	},
-	{
-		name: "Biodiesel Feedstock Trader",
-		category: "Energy — Feedstock Trading",
-		description:
-			"Sourcing and trading waste-oil feedstock for sustainable biodiesel production.",
-		url: "https://biodiesel.goldentie.africa",
-	},
-	{
-		name: "Training Institute",
-		category: "Education — Skills Training",
-		description:
-			"Hands-on training programs building skills for hospitality, service, and entrepreneurship.",
-	},
-];
+// Prerendered at build time from Directus (`subsidiaries` collection).
+// Rebuild to pick up changes.
+const subsidiaries = await getSubsidiaries();
 
 const interests = [
 	"Green Energy",

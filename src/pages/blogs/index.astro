@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPosts, coverImageUrl } from "../../lib/directus";
 
@@ -45,7 +47,14 @@ const dateFormatter = new Intl.DateTimeFormat("en", {
 												tabindex="-1"
 												aria-hidden="true"
 											>
-												<img src={cover} alt="" loading="lazy" />
+												<Image
+												src={cover}
+												inferSize
+												widths={[180, 300, 600]}
+												sizes="(max-width: 640px) 100vw, 300px"
+												alt=""
+												loading="lazy"
+											/>
 											</a>
 										)}
 										<div class="blog-post-content">
