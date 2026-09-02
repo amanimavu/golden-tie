@@ -2,31 +2,42 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import csrImage from "../lib/social-responsibility.jpg";
 
-const pillars = [
+// `image` / `imageAlt`: drop a real photo path in to replace the
+// placeholder block on that row (grayscale treatment applied in CSS).
+const programs = [
 	{
-		name: "Feedstock, Not Waste",
-		category: "Energy — Waste Reduction",
+		category: "Environment — Reforestation",
+		name: "Reforestation",
+		lead: 'One tree planted for every <span class="hi">500&nbsp;kg</span> of oil we collect.',
 		description:
-			"Our Biodiesel Feedstock Trader business exists to divert waste oil away from improper disposal and into cleaner fuel production — turning an environmental liability into a resource.",
+			"Every batch of feedstock the biodiesel business takes in is tracked, and the running tally funds tree planting — so the more waste oil we divert, the more trees go in the ground.",
+		image: null,
+		imageAlt: "",
 	},
 	{
-		name: "Training for Real Work",
+		category: "Environment — Waste Diversion",
+		name: "Waste-Oil Collection",
+		lead: "Used cooking oil, kept out of drains and landfill.",
+		description:
+			"Our Biodiesel Feedstock Trader business collects used cooking oil and other waste oils from restaurants and processors, moving them into cleaner fuel production rather than the environment.",
+		image: null,
+		imageAlt: "",
+	},
+	{
 		category: "Education — Skills & Livelihoods",
+		name: "Skills Training",
+		lead: "Practical skills aimed at real, immediate work.",
 		description:
-			"Our Training Institute builds practical skills for hospitality, service, and entrepreneurship, aimed at real, immediate employability rather than certificates alone.",
-	},
-	{
-		name: "Standards Across the Group",
-		category: "Governance — Responsible Growth",
-		description:
-			"As new ventures join the group, each is held to the same standard of compliance and operational integrity as the ones before it.",
+			"Our Training Institute runs hands-on programs in hospitality, service, and entrepreneurship, built around employability rather than certificates alone.",
+		image: null,
+		imageAlt: "",
 	},
 ];
 ---
 
 <BaseLayout
 	title="Corporate Social Responsibility — Golden Tie Limited"
-	description="How Golden Tie Limited approaches responsibility across its energy, education, and technology ventures — waste reduction, skills training, and consistent governance standards."
+	description="The programs Golden Tie Limited runs across its energy, education, and environmental work — reforestation, waste-oil diversion, and skills training."
 >
 	<header class="page-header" id="top">
 		<img class="page-header-bg" src={csrImage.src} alt="" />
@@ -45,16 +56,33 @@ const pillars = [
 	</header>
 
 	<main>
-		<section class="subsidiaries" id="initiatives" aria-labelledby="initiatives-heading">
-			<h2 id="initiatives-heading" class="visually-hidden">Focus Areas</h2>
+		<section class="programs subsidiaries" id="programs" aria-labelledby="programs-heading">
 			<div class="wrap">
+				<h2 id="programs-heading" class="visually-hidden">Programs</h2>
+				<p class="eyebrow programs-label">Programs</p>
 				{
-					pillars.map((pillar) => (
+					programs.map((program) => (
 						<article class="venture" data-reveal>
-							<p class="eyebrow">{pillar.category}</p>
+							<p class="eyebrow">{program.category}</p>
 							<span class="hairline" aria-hidden="true" />
-							<h3 class="venture-name">{pillar.name}</h3>
-							<p class="venture-desc">{pillar.description}</p>
+							<h3 class="venture-name">{program.name}</h3>
+							<p class="program-lead" set:html={program.lead} />
+							<p class="venture-desc">{program.description}</p>
+							{program.image ? (
+								<img
+									class="program-media"
+									src={program.image}
+									alt={program.imageAlt}
+									width="640"
+									height="800"
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<div class="program-media program-media-placeholder" aria-hidden="true">
+									<span>Image</span>
+								</div>
+							)}
 						</article>
 					))
 				}

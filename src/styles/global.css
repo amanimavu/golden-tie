@@ -62,7 +62,8 @@ body {
 }
 
 #about,
-#subsidiaries {
+#subsidiaries,
+#programs {
     scroll-margin-top: var(--nav-height);
 }
 
@@ -712,6 +713,130 @@ body.drawer-open {
     transform: none;
 }
 
+/* CSR — Programs list. Rows reuse .venture (styling + scroll-reveal +
+   reduced-motion + mobile padding); this only adds the section label and
+   the per-program lead line. */
+
+/* Single gold label for the whole list — the programs carry no per-row
+   category eyebrow, so this sits a little clear of the first hairline. */
+.programs-label {
+    margin-bottom: var(--space-md);
+}
+
+/* The label is .wrap's first child here, so the first .venture is no
+   longer :first-child and picks up a full-width top border. Drop it —
+   the short gold .hairline is the only divider wanted above row one. */
+.programs .venture:first-of-type {
+    border-top: none;
+}
+
+/* Tighten the name→lead gap so the lead reads as part of the same unit,
+   not a separate paragraph. */
+.programs .venture-name {
+    margin-bottom: var(--space-md);
+}
+
+/* One-line program statement between the display name and the muted
+   description — display face, medium weight, one step down from the name. */
+.program-lead {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.25;
+    color: var(--text-primary);
+    max-width: 34ch;
+    /* Even the line lengths so short leads don't drop a single word
+	   ("...work.") onto a lonely second line. */
+    text-wrap: balance;
+    margin: 0 0 var(--space-md);
+}
+
+.program-lead .hi {
+    color: var(--color-gold);
+}
+
+/* Right-hand image for each program row. Grayscale to match the
+   page-header photo treatment; rounded like the blog thumbnails, no
+   border (MASTER: media, not a card). Until a real photo is dropped in,
+   .program-media-placeholder renders a plain hatched block instead. */
+.program-media {
+    width: 100%;
+    margin-top: var(--space-lg);
+    border-radius: 0.75rem;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.03) brightness(0.85);
+}
+
+.program-media-placeholder {
+    display: grid;
+    place-items: center;
+    filter: none;
+    background-color: var(--color-charcoal);
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.03) 0 14px,
+        rgba(255, 255, 255, 0.06) 14px 28px
+    );
+}
+
+.program-media-placeholder span {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Desktop: name / lead / description down the left, image filling the
+   right column so the row uses its full width instead of stacking
+   hard-left. Mobile keeps the plain stacked flow with the image last
+   (below the 900px breakpoint the rest of the file stacks at). */
+@media (min-width: 901px) {
+    .programs .venture {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        grid-template-areas:
+            "eyebrow  media"
+            "hairline media"
+            "name     media"
+            "lead     media"
+            "desc     media";
+        column-gap: var(--space-3xl);
+        align-items: start;
+    }
+
+    .programs .venture > .eyebrow {
+        grid-area: eyebrow;
+    }
+
+    .programs .venture > .hairline {
+        grid-area: hairline;
+    }
+
+    .programs .venture-name {
+        grid-area: name;
+    }
+
+    .programs .program-lead {
+        grid-area: lead;
+    }
+
+    .programs .venture-desc {
+        grid-area: desc;
+        max-width: 42ch;
+    }
+
+    .programs .program-media {
+        grid-area: media;
+        align-self: stretch;
+        margin-top: 0;
+        aspect-ratio: auto;
+        height: 100%;
+        min-height: 280px;
+    }
+}
+
 /* About */
 
 .about {
@@ -1115,9 +1240,24 @@ h2 {
     padding-block: var(--space-2xl) var(--space-xl);
 }
 
+/* Sits over the photo header where the image can be bright — a plain
+   outline pill washes out. Dark glass fill + brighter border keeps it
+   legible on any part of the photo. (blur routed through a custom prop so
+   the minifier doesn't collapse the space between filter functions —
+   same reason as .nav-capsule.) */
 .blog-back {
     display: inline-flex;
     margin-bottom: var(--space-lg);
+    --blog-back-blur: blur(8px) saturate(130%);
+    background: rgba(19, 19, 19, 0.55);
+    border-color: rgba(255, 255, 255, 0.45);
+    -webkit-backdrop-filter: var(--blog-back-blur);
+    backdrop-filter: var(--blog-back-blur);
+}
+
+.blog-back:hover,
+.blog-back:focus-visible {
+    background: rgba(19, 19, 19, 0.78);
 }
 
 .blog-list-section {
@@ -1186,16 +1326,37 @@ h2 {
 }
 
 @media (max-width: 640px) {
+    /* A ~90px thumbnail beside a tall text column reads as cramped on a
+       phone — stack instead: full-width image, text below. */
     .blog-post-item {
-        gap: var(--space-lg);
+        flex-direction: column;
+        gap: var(--space-md);
     }
 
     .blog-post-thumb {
-        width: clamp(72px, 22vw, 96px);
+        width: 100%;
+        aspect-ratio: 3 / 2;
     }
 
     .blog-post-item .venture-name {
         font-size: clamp(1.5rem, 6vw, 2.25rem);
+    }
+
+    /* Top: clear the fixed nav toggle (same as .hero-grid / .page-header
+       do at this width) so the title doesn't sit under the hamburger.
+       Bottom: desktop stacks ~144px between the intro and the first post
+       (header bottom + section top + row top) — far too much on a phone,
+       so collapse it to one tidy gap. */
+    .blog-header {
+        padding-block: var(--nav-height) var(--space-sm);
+    }
+
+    .blog-list-section {
+        padding-top: 0;
+    }
+
+    .blog-list .venture:first-child {
+        padding-top: var(--space-lg);
     }
 }
 
@@ -1204,7 +1365,10 @@ h2 {
 }
 
 .post-body {
-    max-width: 65ch;
+    /* Left-aligned (not centred) so its left edge lines up with the
+       header title, which is also left-aligned in .wrap. Wider than a
+       strict 65ch measure to take back some of the right-hand gap. */
+    max-width: 74ch;
     font-size: 1.05rem;
 }
 
