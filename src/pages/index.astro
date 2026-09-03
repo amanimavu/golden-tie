@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NoiseReveal from "../components/NoiseReveal.astro";
 import { getSubsidiaries } from "../lib/directus";
+import heroImageUrl from "../lib/images/hero-image.png?url"
+import goldenTieEmblemUrl from "../lib/images/golden-tie-emblem.png?url"
 
 // Prerendered at build time from Directus (`subsidiaries` collection).
 // Rebuild to pick up changes.
@@ -30,8 +32,8 @@ const interests = [
 			</div>
 			<div class="hero-graphic">
 				<NoiseReveal
-					src="/images/hero-image.png"
-					mobileSrc="/images/golden-tie-emblem.png"
+					src={heroImageUrl}
+					mobileSrc={goldenTieEmblemUrl}
 					width={640}
 					height={640}
 				/>
