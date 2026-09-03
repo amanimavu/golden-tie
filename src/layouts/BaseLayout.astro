@@ -1,14 +1,29 @@
 ---
 import "../styles/global.css";
 import logoSrc from "../lib/golden-tie-logo.svg?url";
+import defaultOgImage from "../assets/images/hero-image.png";
 
 export interface Props {
 	title: string;
 	description: string;
+    image?:ImageMetadata
 }
 
-const { title, description } = Astro.props;
+const { title, description,  image = defaultOgImage } = Astro.props;
 const year = new Date().getFullYear();
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image.src, Astro.site);
+
+const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Golden Tie Ltd",
+    url: Astro.site?.toString(),
+    logo: new URL(logoSrc, Astro.site).toString(),
+    telephone: "+254759080224",
+    email: "admin@goldentie.africa",
+};
 ---
 
 <html lang="en">
@@ -22,6 +37,19 @@ const year = new Date().getFullYear();
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+
+        <meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageURL} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
+
 		<title>{title}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,6 +57,8 @@ const year = new Date().getFullYear();
 			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600&display=swap"
 			rel="stylesheet"
 		/>
+
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 	</head>
 	<body>
 		<div class="wrap brand-inline">
