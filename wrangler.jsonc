@@ -23,6 +23,6 @@
     "vars": {
         "CONTACT_TO_EMAIL": "contact@goldentie.africa",
         "CONTACT_FROM_EMAIL": "admin@goldentie.africa",
-        "DIRECTUS_URL": "http://goldentiecms.local",
+        "DIRECTUS_URL": "https://cms.goldentie.africa",
     },
 }
