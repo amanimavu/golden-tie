@@ -21,8 +21,8 @@
     // Non-secret only — RESEND_API_KEY stays out of this file (git-tracked)
     // and lives in .dev.vars locally / Cloudflare dashboard secrets in prod.
     "vars": {
-        "CONTACT_TO_EMAIL": "admin@goldentie.africa",
-        "CONTACT_FROM_EMAIL": "contact@goldentie.africa",
+        "CONTACT_TO_EMAIL": "contact@goldentie.africa",
+        "CONTACT_FROM_EMAIL": "admin@goldentie.africa",
         "DIRECTUS_URL": "http://goldentiecms.local",
     },
 }
