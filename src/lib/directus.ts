@@ -84,10 +84,7 @@ const devFallback = <T>(value: T): T | null =>
 export async function getPosts(): Promise<Post[]> {
     const baseUrl = getDirectusUrl();
 
-    console.log(
-        "CI Build Check - DIRECTUS_URL:",
-        baseUrl ? "Found" : "Missing",
-    );
+    console.log("CI Build Check - DIRECTUS_URL:", baseUrl);
     try {
         if (!baseUrl) return devFallback(DUMMY_POSTS) ?? [];
 
