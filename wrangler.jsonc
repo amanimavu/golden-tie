@@ -20,6 +20,9 @@
     },
     // Non-secret only — RESEND_API_KEY stays out of this file (git-tracked)
     // and lives in .dev.vars locally / Cloudflare dashboard secrets in prod.
+
+    // These variables will only be set as runtime environments in
+    // cloudflare dashboard
     "vars": {
         "CONTACT_TO_EMAIL": "contact@goldentie.africa",
         "CONTACT_FROM_EMAIL": "admin@goldentie.africa",
