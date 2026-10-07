@@ -63,6 +63,7 @@ body {
 
 #about,
 #subsidiaries,
+#partners,
 #programs {
     scroll-margin-top: var(--nav-height);
 }
@@ -817,6 +818,114 @@ body.drawer-open {
     }
 }
 
+/* Partners */
+
+/* Shares the paper background with the .about band above, so a hairline is
+   the only thing telling the two sections apart — the same ink-tint rule
+   .interest-list uses. Padding is tighter at the top than a standalone
+   section would get, so the pair reads as one light run into Contact. */
+.partners {
+    background: var(--color-paper);
+    padding-block: var(--space-2xl) var(--space-3xl);
+    border-top: 1px solid rgba(19, 19, 19, 0.15);
+}
+
+/* Global h2 is set to --color-paper for the ink sections; About already
+   overrides it for paper, and Partners needs the same override now that its
+   heading is visible rather than screen-reader only. */
+.partners h2 {
+    color: var(--color-ink);
+}
+
+/* Marks sit in equal bordered tiles. Deliberately a wrapping flex row, not
+   a grid: a grid with auto-fill/auto-fit either reserves phantom tracks
+   (a lopsided row of 2 followed by dead space) or stretches the tiles to
+   absurd widths once the count is low. Flex shrink-wraps to whatever is
+   actually there — 2 partners read as a deliberate compact block, and the
+   row fills out on its own as partners are added, still 5 across at the
+   1180px content max.
+   This is also a deliberate departure from MASTER's "no bordered card" rule
+   (see design-system/golden-tie/pages/index.md): the partner logo wall is
+   the one place the reference treatment calls for framed marks, and it
+   reads as a logo grid rather than as content cards. */
+.partner-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: 0;
+    margin: 0;
+}
+
+.partner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Flex items size to content, so nothing stretches them to match a
+       neighbour — this is the floor that keeps a row of short, wide
+       wordmarks from collapsing into a thin bar. */
+    flex: 0 0 210px;
+    max-width: 100%;
+    min-height: 96px;
+    padding: var(--space-xl);
+    background: var(--color-paper);
+    border: 1px solid rgba(19, 19, 19, 0.12);
+    border-radius: 0.75rem;
+}
+
+.partner-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Partner marks are colourful brand artwork — kept at full saturation,
+       unlike the grayscale photo treatment used elsewhere. Dimmed just
+       enough to read as a grid; lifts to full on hover. */
+    opacity: 0.82;
+    transition: opacity 200ms ease;
+}
+
+.partner-link:hover,
+.partner-link:focus-visible {
+    opacity: 1;
+}
+
+/* Global focus ring is gold, which is ~1.7:1 on paper — invisible here. */
+.partner-link:focus-visible {
+    outline-color: var(--color-orange);
+}
+
+/* Bounded by the tile's padding, so width is the binding constraint and
+   `sizes` on the <Image> can be right. max-height catches a tall narrow
+   mark that would otherwise overflow its tile. */
+.partner-logo {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 104px;
+}
+
+@media (max-width: 640px) {
+    /* Narrower tiles so a phone still fits a pair per row rather than
+       dropping to one full-width tile at a time. */
+    .partner {
+        flex-basis: 150px;
+    }
+}
+
+.js .partner-list {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 700ms ease,
+        transform 700ms ease;
+}
+
+.js .partner-list.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
 /* About */
 
 .about {
@@ -1406,7 +1515,8 @@ h2 {
         transform: none !important;
     }
 
-    .js .venture {
+    .js .venture,
+    .js .partner-list {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;

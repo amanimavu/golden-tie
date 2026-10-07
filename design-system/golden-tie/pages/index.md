@@ -1,7 +1,7 @@
 # Page Override: index (`/`)
 
 Overrides MASTER.md where noted. Site is now **multi-page** (Index, CSR, Blogs) — index is the
-main marketing page: Hero, Subsidiaries, About, Footer.
+main marketing page: Hero, Subsidiaries, About, Partners, Footer.
 
 ## Navigation (site-wide, lives in Hero on every page)
 
@@ -10,6 +10,8 @@ Wordmark/logo left, nav right, rendered as pills per MASTER's Signature Shape La
 - **About** — outline pill, anchor to `#about` on index; from other pages, link to `/#about`
 - **Subsidiaries** — outline pill, anchor to `#subsidiaries` on index; from other pages, link to
   `/#subsidiaries`
+- **Partners** — outline pill, anchor to `#partners` on index; from other pages, link to
+  `/#partners`
 - **Corporate Social Responsibility** — filled Gold pill, links to `/csr` page (label may
   abbreviate to "CSR" on small screens). Filled, not outline, because it's the one nav item that
   goes to a different page rather than scrolling this one.
@@ -25,7 +27,15 @@ section" tracking was considered and skipped as unnecessary complexity for a sin
    App, Biodiesel Feedstock Trader, Training Institute). `id="subsidiaries"` on the wrapping
    section for nav anchoring.
 3. **About** — conglomerate description + industries list. `id="about"` on the section.
-4. **Footer** — company info, social icons (with hover micro-interactions per MASTER). No
+4. **Partners** — partner marks on bordered tiles in a wrapping flex row, not a grid: flex
+   shrink-wraps to the actual partner count, so a short list reads as a deliberate compact block
+   instead of a lopsided row followed by dead space. 5 tiles across at the 1180px content max,
+   stepping to 2 per row below 640px. `id="partners"` on the section for nav anchoring. On Paper,
+   continuing the light band from About and separated from it by a single hairline. Logos live in
+   `src/lib/images/partners/` and are added as entries to the `partners` array in `index.astro`'s
+   frontmatter. **Overrides MASTER's "no bordered card" rule** — the logo wall is the one place
+   framed marks are wanted, and reads as a logo grid rather than as content cards.
+5. **Footer** — company info, social icons (with hover micro-interactions per MASTER). No
    secondary nav — tried, removed; primary nav in the hero is the only nav on the page.
 
 ## Subsidiary content (for the three spreads)
