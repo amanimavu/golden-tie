@@ -31,10 +31,24 @@ section" tracking was considered and skipped as unnecessary complexity for a sin
    shrink-wraps to the actual partner count, so a short list reads as a deliberate compact block
    instead of a lopsided row followed by dead space. 5 tiles across at the 1180px content max,
    stepping to 2 per row below 640px. `id="partners"` on the section for nav anchoring. On Paper,
-   continuing the light band from About and separated from it by a single hairline. Logos live in
-   `src/lib/images/partners/` and are added as entries to the `partners` array in `index.astro`'s
-   frontmatter. **Overrides MASTER's "no bordered card" rule** — the logo wall is the one place
-   framed marks are wanted, and reads as a logo grid rather than as content cards.
+   continuing the light band from About and separated from it by a single hairline.
+   **Overrides MASTER's "no bordered card" rule** — the logo wall is the one place framed marks
+   are wanted, and reads as a logo grid rather than as content cards.
+
+   **Source of truth:** the CMS `partners` collection (`id`, `archived`, `name`, `url`, `logo`,
+   `sort`), read at build time by `getPartners()` in `src/lib/directus.ts`. `name` doubles as the
+   logo's `alt` — there is no separate `logo_alt`, unlike `programs.image_alt`, because a photo
+   needs describing where a logo only needs naming.
+
+   **Fallback:** when the CMS yields no usable row (no URL, request failure, role without read
+   access, empty collection, or rows with a null `logo`), `getPartners()` returns every image in
+   `src/lib/images/partners/` instead, discovered by a Vite glob so dropping a file into the
+   folder is the only step needed to add a partner. Names come from the filename
+   (`tropical-heat.png` → "Tropical Heat") and local partners are always unlinked, since a file
+   on disk has nowhere to hang an outbound URL.
+
+   Note: `DIRECTUS_URL` is pinned to production in `wrangler.jsonc`, and `.dev.vars` does not
+   override it — so a collection created against a local Directus is never read by the build.
 5. **Footer** — company info, social icons (with hover micro-interactions per MASTER). No
    secondary nav — tried, removed; primary nav in the hero is the only nav on the page.
 
