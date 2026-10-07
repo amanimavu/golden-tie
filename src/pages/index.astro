@@ -2,36 +2,22 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NoiseReveal from "../components/NoiseReveal.astro";
-import { getSubsidiaries } from "../lib/directus";
+import { getPartners, getSubsidiaries } from "../lib/directus";
 import heroImageUrl from "../lib/images/hero-image.png?url"
 import goldenTieEmblemUrl from "../lib/images/golden-tie-emblem.png?url"
-import tropicalHeatLogo from "../lib/images/partners/tropical-heat.png";
-import giloilLogo from "../lib/images/partners/giloil.png";
 
 // Prerendered at build time from Directus (`subsidiaries` collection).
 // Rebuild to pick up changes.
 const subsidiaries = await getSubsidiaries();
 
+// Partners come from the CMS `partners` collection when it has usable rows,
+// and otherwise from the logos in src/lib/images/partners/ — see getPartners().
+const partners = await getPartners();
+
 const interests = [
 	"Green Energy",
 	"Skills focused Education",
 	"Technology",
-];
-
-interface Partner {
-	name: string;
-	logo: ImageMetadata;
-	url?: string | null;
-}
-
-// Partner marks live in src/lib/images/partners/ — drop the logo file in
-// and add an entry here. `logo` is imported as ImageMetadata (not ?url) so
-// <Image> gets the intrinsic dimensions and can optimise the source, which
-// is a full-colour 2500px-wide PNG that has no business shipping at that
-// size for a slot a few hundred pixels wide.
-const partners: Partner[] = [
-	{ name: "Tropical Heat", logo: tropicalHeatLogo },
-	{ name: "Giloil", logo: giloilLogo },
 ];
 ---
 
@@ -109,45 +95,57 @@ const partners: Partner[] = [
 			</div>
 		</section>
 
-		<section class="partners" id="partners" aria-labelledby="partners-heading">
-			<div class="wrap">
-				<h2 id="partners-heading">Our Partners</h2>
-				<ul class="partner-list" data-reveal>
-					{
-						partners.map((partner) => (
-							<li class="partner">
-								{partner.url ? (
-									<a
-										class="partner-link"
-										href={partner.url}
-										target="_blank"
-										rel="noopener"
-									>
+		{
+			/* No usable CMS rows means no section at all — a heading over an
+			   empty grid reads as a rendering bug rather than as "no partners
+			   yet". The `id` is absent too, so the nav anchor goes with it. */
+			partners.length > 0 && (
+				<section class="partners" id="partners" aria-labelledby="partners-heading">
+					<div class="wrap">
+						<h2 id="partners-heading">Our Partners</h2>
+						<ul class="partner-list" data-reveal>
+							{
+								partners.map((partner) => {
+									// <Image>'s props are a discriminated union keyed on
+									// `inferSize`, so it has to be a literal `true` to select the
+									// remote-source overload. Building the element here keeps the
+									// attributes in one place instead of duplicating them across the
+									// linked / unlinked branches below.
+									const logo = (
 										<Image
 											class="partner-logo"
 											src={partner.logo}
 											alt={partner.name}
+											inferSize
 											widths={[110, 150, 240]}
 											sizes="150px"
 											loading="lazy"
 										/>
-									</a>
-								) : (
-									<Image
-										class="partner-logo"
-										src={partner.logo}
-										alt={partner.name}
-										widths={[110, 150, 240]}
-										sizes="150px"
-										loading="lazy"
-									/>
-								)}
-							</li>
-						))
-					}
-				</ul>
-			</div>
-		</section>
+									);
+
+									return (
+										<li class="partner">
+											{partner.url ? (
+												<a
+													class="partner-link"
+													href={partner.url}
+													target="_blank"
+													rel="noopener"
+												>
+													{logo}
+												</a>
+											) : (
+												logo
+											)}
+										</li>
+									);
+								})
+							}
+						</ul>
+					</div>
+				</section>
+			)
+		}
 
 		<section class="contact-section" id="contact" aria-labelledby="contact-heading">
 			<div class="wrap contact-grid">

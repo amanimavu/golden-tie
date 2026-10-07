@@ -877,16 +877,6 @@ body.drawer-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Partner marks are colourful brand artwork — kept at full saturation,
-       unlike the grayscale photo treatment used elsewhere. Dimmed just
-       enough to read as a grid; lifts to full on hover. */
-    opacity: 0.82;
-    transition: opacity 200ms ease;
-}
-
-.partner-link:hover,
-.partner-link:focus-visible {
-    opacity: 1;
 }
 
 /* Global focus ring is gold, which is ~1.7:1 on paper — invisible here. */
@@ -896,7 +886,7 @@ body.drawer-open {
 
 /* Bounded by the tile's padding, so width is the binding constraint and
    `sizes` on the <Image> can be right. max-height catches a tall narrow
-   mark that would otherwise overflow its tile. */
+   mark that would otherwise overflow its tile.*/
 .partner-logo {
     display: block;
     width: auto;

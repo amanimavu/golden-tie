@@ -264,6 +264,56 @@ export async function getPrograms(): Promise<Program[]> {
     }
 }
 
+export interface Partner {
+    id: number;
+    name: string;
+    url: string | null;
+    logo: string;
+}
+
+// Raw row shape — `logo` is a Directus file UUID, resolved to a URL below.
+interface DirectusPartner {
+    id: number;
+    name: string;
+    url: string | null;
+    logo: string | null;
+}
+
+const PARTNER_FIELDS = ["id", "name", "url", "logo"].join(",");
+
+// The CMS `partners` collection is the only source. Returns [] on a missing
+// URL, a failed request, a role without read access, or a collection with no
+// usable rows — the caller hides the section entirely rather than rendering
+// an empty one, since a heading with nothing under it reads as a bug.
+export async function getPartners(): Promise<Partner[]> {
+    const baseUrl = getDirectusUrl();
+    if (!baseUrl) return [];
+
+    try {
+        const url = new URL("/items/partners", baseUrl);
+        url.searchParams.set("fields", PARTNER_FIELDS);
+        url.searchParams.set("filter[archived][_eq]", "false");
+        url.searchParams.set("sort", "id");
+
+        const res = await fetch(url, { headers: headers() });
+        if (!res.ok) return [];
+
+        const { data } = (await res.json()) as { data: DirectusPartner[] };
+
+        // Drop rows with no file rather than rendering an empty tile.
+        return data
+            .filter((row) => row.logo)
+            .map((row) => ({
+                id: row.id,
+                name: row.name,
+                url: row.url,
+                logo: new URL(`/assets/${row.logo}`, baseUrl).toString(),
+            }));
+    } catch {
+        return [];
+    }
+}
+
 // --- Assets ----------------------------------------------------------------
 
 // Full Directus asset URL for a post cover. Fed to <Image> as a remote
