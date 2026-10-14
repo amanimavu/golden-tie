@@ -1,0 +1,40 @@
+# Response headers applied by Cloudflare Workers Static Assets to every
+# response served from the assets directory.
+#
+# Most of the CSP lives in astro.config.mjs (`security.csp`), which emits a
+# <meta http-equiv> on each page carrying the full policy — including the
+# per-build script-src/style-src hashes for the styles and inline module
+# scripts Astro inlines. Edit the policy there, not here.
+#
+# The line below carries only what a <meta> element cannot enforce. Both
+# policies are enforced independently and intersected, so this adds to the
+# meta rather than replacing it.
+
+/*
+  # frame-ancestors and sandbox are ignored in a <meta> CSP, so clickjacking
+  # protection can only come from here.
+  Content-Security-Policy: frame-ancestors 'none'; sandbox allow-scripts allow-same-origin allow-forms allow-popups
+
+  # Legacy clickjacking fallback for browsers without frame-ancestors.
+  X-Frame-Options: DENY
+
+  # Legacy XSS auditor has known bypasses and can itself introduce
+  # vulnerabilities; CSP is the real control.
+  X-XSS-Protection: 0
+
+  X-Content-Type-Options: nosniff
+
+  # Deliberately without includeSubDomains/preload: cms.goldentie.africa and
+  # biodiesel.goldentie.africa are separate hosts and this Worker can't vouch
+  # for their TLS setup. Widen once they are confirmed HTTPS-only.
+  Strict-Transport-Security: max-age=31536000
+
+  # Sends the full URL cross-origin only to same-origin targets; keeps social
+  # link previews working while dropping paths and query strings.
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # No camera, geolocation, mic, payment or USB use anywhere on the site.
+  Permissions-Policy: camera=(), geolocation=(), microphone=(), payment=(), usb=()
+
+  # Severs window.opener, so a target="_blank" link can't tabnab this site.
+  Cross-Origin-Opener-Policy: same-origin
