@@ -946,6 +946,73 @@ h2 {
     color: var(--color-ink);
 }
 
+/* Rich text from the CMS `about` collection. Separate from the plain `.about p`
+   above: that rule is a bare element selector kept for the intro paragraph's
+   benefit, while this styles a full editor-authored fragment, which can carry
+   headings, lists and emphasis that the old single <p> wrapper could not hold.
+   Colours are the paper-band equivalents of .post-body's ink equivalents —
+   body text at the same 0.7 alpha, accents at full --color-ink rather than
+   gold, which would fall to ~1.7:1 against a white background. */
+.about-body {
+    color: rgba(19, 19, 19, 0.7);
+    font-size: 1.05rem;
+}
+
+.about-body > *:first-child {
+    margin-top: 0;
+}
+
+.about-body > *:last-child {
+    margin-bottom: 0;
+}
+
+.about-body p {
+    max-width: 60ch;
+    margin: 0 0 var(--space-lg);
+}
+
+.about-body h3,
+.about-body h4 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin: var(--space-xl) 0 var(--space-md);
+}
+
+.about-body ul,
+.about-body ol {
+    max-width: 60ch;
+    margin: 0 0 var(--space-lg);
+    padding-left: 1.25em;
+}
+
+.about-body li {
+    margin-bottom: var(--space-sm);
+}
+
+/* Inline markup an editor is expected to use for emphasis within a sentence. */
+.about-body strong,
+.about-body b {
+    color: var(--color-ink);
+}
+
+.about-body a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-orange);
+    text-underline-offset: 2px;
+}
+
+.about-body blockquote {
+    max-width: 60ch;
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-lg);
+    border-left: 2px solid var(--color-orange);
+    color: rgba(19, 19, 19, 0.6);
+}
+
 /* Contact */
 
 .contact-section {

@@ -314,6 +314,159 @@ export async function getPartners(): Promise<Partner[]> {
     }
 }
 
+// --- Hero (singleton) -------------------------------------------------------
+
+// `hero` collection — the index page masthead. Fields:
+//
+//   id       integer  (auto PK)
+//   archived boolean  (default false — the publish gate)
+//   headline string   (the h1; defaults to the company name, which is also
+//                     what the <title> tag and the footer wordmark use, so
+//                     changing it here is an editorial choice, not a rename)
+//   sub      string   (the tagline under the headline)
+export interface Hero {
+    id: number;
+    headline: string;
+    sub: string;
+}
+
+const HERO_FIELDS = ["id", "headline", "sub"].join(",");
+
+// Dev-only fallback so a fresh clone renders a sensible hero before anyone has
+// created the collection. Returns null in production rather than shipping the
+// placeholder — the same split getPosts() uses for DUMMY_POSTS. The missing
+// headline falls back to the company name in the caller, which is correct for
+// both cases rather than being a dev-only artefact.
+const DUMMY_HERO: Hero = {
+    id: 1,
+    headline: "Golden Tie Limited",
+    sub: "A conglomerate with interests across Technology, Green energy and Education",
+};
+
+export async function getHero(): Promise<Hero | null> {
+    const baseUrl = getDirectusUrl();
+    if (!baseUrl) return devFallback(DUMMY_HERO);
+
+    try {
+        const url = new URL("/items/hero", baseUrl);
+        url.searchParams.set("fields", HERO_FIELDS);
+
+        // A singleton collection returns `data` as a single object, not an
+        // array — indexing it (data[0]) yields undefined and silently reads as
+        // "no content". Archived rows come back as null, which is why this
+        // checks the value rather than the status.
+        const res = await fetch(url, { headers: headers() });
+        if (!res.ok) return devFallback(DUMMY_HERO);
+
+        const { data } = (await res.json()) as { data: Hero | null };
+        if (!data?.sub) return devFallback(DUMMY_HERO);
+
+        return { id: data.id, headline: data.headline, sub: data.sub };
+    } catch {
+        return devFallback(DUMMY_HERO);
+    }
+}
+
+// --- About (singleton) ------------------------------------------------------
+
+// `about` collection — a single row holding the homepage About copy. Fields:
+//
+//   id       integer  (auto PK)
+//   archived boolean  (default false — the publish gate)
+//   body     text     (rich copy — set the field's interface to
+//                     "input-rich-text-html" for a WYSIWYG editor. The stored
+//                     type stays `text`; rich text is an interface, not a
+//                     type, matching posts.body. May contain
+//                     <span class="accent"> wrappers around highlighted
+//                     phrases, which .about styles)
+//
+// One row, addressed by collection name rather than by id. `heading` is
+// deliberately not a field — "About" is the section's fixed identity, not copy
+// an editor should be able to change.
+export interface About {
+    id: number;
+    // Admin-authored HTML from the CMS's rich-text editor. Rendered with
+    // set:html and *not* wrapped in a <p> — a rich-text value is a document
+    // fragment that already carries its own block elements, and nesting those
+    // inside a <p> is invalid markup that browsers silently restructure.
+    // Same trust model as post `body` and program `lead`.
+    body: string;
+}
+
+const ABOUT_FIELDS = ["id", "body"].join(",");
+
+// Returns null on a missing URL, failed request, role without read access, or
+// a collection with no rows — the caller omits the paragraph entirely rather
+// than rendering an empty one.
+export async function getAbout(): Promise<About | null> {
+    const baseUrl = getDirectusUrl();
+    if (!baseUrl) return null;
+
+    try {
+        const url = new URL("/items/about", baseUrl);
+        url.searchParams.set("fields", ABOUT_FIELDS);
+        // No filter or limit: a singleton collection is addressed by name, not
+        // by row, so it ignores both. Applying them here would be misleading —
+        // the response shape is decided by the singleton flag alone.
+
+        const res = await fetch(url, { headers: headers() });
+        if (!res.ok) return null;
+
+        // A singleton collection returns `data` as a single object, not an
+        // array — indexing it (data[0]) yields undefined and silently reads as
+        // "no content". Archived rows come back as null, which is why this
+        // checks the value rather than the status.
+        const { data } = (await res.json()) as { data: About | null };
+        if (!data?.body) return null;
+
+        return { id: data.id, body: data.body };
+    } catch {
+        return null;
+    }
+}
+
+// --- Interests --------------------------------------------------------------
+
+// `interests` collection — the short list of industries under the About copy.
+// Fields:
+//
+//   id       integer  (auto PK)
+//   archived boolean  (default false — the publish gate)
+//   name     string   (the label, e.g. "Green Energy")
+//   sort     integer  (editors reorder by setting this; the query sorts on it)
+export interface Interest {
+    id: number;
+    name: string;
+}
+
+const INTEREST_FIELDS = ["id", "name"].join(",");
+
+// Returns [] on a miss, for the same reason getAbout() returns null: the caller
+// renders no list rather than an empty one.
+export async function getInterests(): Promise<Interest[]> {
+    const baseUrl = getDirectusUrl();
+    if (!baseUrl) return [];
+
+    try {
+        const url = new URL("/items/interests", baseUrl);
+        url.searchParams.set("fields", INTEREST_FIELDS);
+        url.searchParams.set("filter[archived][_eq]", "false");
+        // Editors control order through the `sort` field; without one set it
+        // falls back to creation order via id.
+        url.searchParams.set("sort", "sort,id");
+
+        const res = await fetch(url, { headers: headers() });
+        if (!res.ok) return [];
+
+        const { data } = (await res.json()) as { data: Interest[] };
+        return data
+            .filter((row) => row.name)
+            .map((row) => ({ id: row.id, name: row.name }));
+    } catch {
+        return [];
+    }
+}
+
 // --- Assets ----------------------------------------------------------------
 
 // Full Directus asset URL for a post cover. Fed to <Image> as a remote

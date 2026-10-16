@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NoiseReveal from "../components/NoiseReveal.astro";
-import { getPartners, getSubsidiaries } from "../lib/directus";
+import { getAbout, getHero, getInterests, getPartners, getSubsidiaries } from "../lib/directus";
 import heroImageUrl from "../lib/images/hero-image.png?url"
 import goldenTieEmblemUrl from "../lib/images/golden-tie-emblem.png?url"
 
@@ -10,15 +10,19 @@ import goldenTieEmblemUrl from "../lib/images/golden-tie-emblem.png?url"
 // Rebuild to pick up changes.
 const subsidiaries = await getSubsidiaries();
 
-// Partners come from the CMS `partners` collection when it has usable rows,
-// and otherwise from the logos in src/lib/images/partners/ — see getPartners().
+// Partners are CMS-only (`partners` collection).
 const partners = await getPartners();
 
-const interests = [
-	"Green Energy",
-	"Skills focused Education",
-	"Technology",
-];
+// Hero masthead (`hero` singleton). `headline` may be empty, in which case
+// the company name stands in — that is the real value most of the time, and
+// duplicating it into the CMS would create two things to keep in sync.
+const hero = await getHero();
+const heroHeadline = hero?.headline || "Golden Tie Limited";
+
+// About copy (`about` singleton) and its industry list (`interests`). Both
+// return empty on a miss, and the markup below omits what isn't there.
+const about = await getAbout();
+const interests = await getInterests();
 ---
 
 <BaseLayout
@@ -28,10 +32,8 @@ const interests = [
 	<header class="hero" id="top">
 		<div class="wrap hero-grid">
 			<div class="hero-content">
-				<h1 class="hero-headline">Golden Tie Limited</h1>
-				<p class="hero-sub">
-					A conglomerate with interests across Technology, Green energy and Education
-				</p>
+				<h1 class="hero-headline">{heroHeadline}</h1>
+				{hero?.sub && <p class="hero-sub">{hero.sub}</p>}
 			</div>
 			<div class="hero-graphic">
 				<NoiseReveal
@@ -81,19 +83,26 @@ const interests = [
 			</div>
 		</section>
 
-		<section class="about" id="about" aria-labelledby="about-heading">
-			<div class="wrap">
-				<h2 id="about-heading">About</h2>
-				<p>
-					Golden Tie Limited brings together a diverse portfolio of ventures under
-					one holding company — from <span class="accent">Green Energy</span> to <span class="accent">Skill Set Education</span> and <span class="accent">Technology</span> — each built with the same standard
-					of execution.
-				</p>
-				<ul class="interest-list">
-					{interests.map((interest) => <li>{interest}</li>)}
-				</ul>
-			</div>
-		</section>
+		{
+			/* Both halves are CMS-driven and independently optional — the About
+			   band is the page's one light section, so it keeps its heading even
+			   when there is no copy yet, and just loses the empty <p> / <ul>. */
+			(about || interests.length > 0) && (
+				<section class="about" id="about" aria-labelledby="about-heading">
+					<div class="wrap">
+						<h2 id="about-heading">About</h2>
+						{about && <div class="about-body" set:html={about.body} />}
+						{
+							interests.length > 0 && (
+								<ul class="interest-list">
+									{interests.map((interest) => <li>{interest.name}</li>)}
+								</ul>
+							)
+						}
+					</div>
+				</section>
+			)
+		}
 
 		{
 			/* No usable CMS rows means no section at all — a heading over an
